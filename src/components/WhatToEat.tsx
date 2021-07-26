@@ -10,11 +10,27 @@ const meals = [
   "焖面",
   "火锅",
   "大盘鸡",
-  "卤肉",
+  "卤肉面",
   "干锅",
   "水饺",
   "火锅面",
-  "水果",
+  "水果沙拉",
+  "鸡蛋面",
+  "醋溜白菜",
+  "红烧肉",
+  "白吉馍",
+  "鸭血粉丝汤",
+  "手抓饼",
+  "煎包",
+  "油条",
+  "麻婆豆腐",
+  "酸汤肥牛",
+  "烤红薯",
+  "烤鱼",
+  "烧烤",
+  "巧克力",
+  "红烧排骨",
+  "孜然羊肉",
 ];
 
 const getRandomTop = () => {
@@ -72,7 +88,7 @@ function WhatToEat() {
   };
 
   return (
-    <div>
+    <div className='h-screen flex flex-col justify-center items-center'>
       <div className='text-lg  text-gray-700'>今天吃什么，吃什么？</div>
       <div className='text-red-400 text-2xl font-bold  m-5'>
         {clickCount < 3 ? meals[randomIndex] : "这么作，别吃了！！"}
