@@ -42,7 +42,7 @@ const getRandomLeft = () => {
 };
 
 const getRandomFontSize = () => {
-  return Math.ceil((Math.random() * window.innerWidth) / 50) + 20;
+  return Math.ceil((Math.random() * window.innerWidth) / 50) + 10;
 };
 
 const initializeStyles = (array: string[]) => {
@@ -89,28 +89,30 @@ function WhatToEat() {
 
   return (
     <div className='h-screen flex flex-col justify-center items-center'>
-      <div className='text-lg  text-gray-700'>今天吃什么，吃什么？</div>
-      <div className='text-red-400 text-2xl font-bold  m-5'>
-        {clickCount < 3 ? meals[randomIndex] : "这么作，别吃了！！"}
-      </div>
+      <div className='relative z-20'>
+        <div className='text-lg  text-gray-700'>今天吃什么，吃什么？</div>
+        <div className='text-red-400 text-2xl font-bold  m-5'>
+          {clickCount < 3 ? meals[randomIndex] : "这么作，别吃了！！"}
+        </div>
 
-      {clickCount < 3 ? (
-        isStart ? (
-          <button
-            className='bg-red-500 hover:bg-red-600 text-white shadow-lg rounded-lg px-10 py-3 m-5'
-            onClick={handleStop}
-          >
-            停止
-          </button>
-        ) : (
-          <button
-            className='bg-blue-500 hover:bg-blue-600 text-white shadow-lg rounded-lg px-10 py-3 m-5'
-            onClick={handleStart}
-          >
-            开始
-          </button>
-        )
-      ) : null}
+        {clickCount < 3 ? (
+          isStart ? (
+            <button
+              className='bg-red-500 hover:bg-red-600 text-white shadow-lg rounded-lg px-10 py-3 m-5'
+              onClick={handleStop}
+            >
+              停止
+            </button>
+          ) : (
+            <button
+              className='bg-blue-500 hover:bg-blue-600 text-white shadow-lg rounded-lg px-10 py-3 m-5'
+              onClick={handleStart}
+            >
+              开始
+            </button>
+          )
+        ) : null}
+      </div>
 
       {isStart && meals.length ? (
         <div className='text-gray-600'>
