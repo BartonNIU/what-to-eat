@@ -97,14 +97,14 @@ function WhatToEat() {
       {clickCount < 3 ? (
         isStart ? (
           <button
-            className='bg-red-400 hover:bg-red-500 shadow-lg rounded-lg px-10 py-3 m-5'
+            className='bg-red-500 hover:bg-red-600 text-white shadow-lg rounded-lg px-10 py-3 m-5'
             onClick={handleStop}
           >
             停止
           </button>
         ) : (
           <button
-            className='bg-blue-400 hover:bg-blue-500 shadow-lg rounded-lg px-10 py-3 m-5'
+            className='bg-blue-500 hover:bg-blue-600 text-white shadow-lg rounded-lg px-10 py-3 m-5'
             onClick={handleStart}
           >
             开始
