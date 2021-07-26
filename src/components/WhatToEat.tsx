@@ -62,12 +62,6 @@ function WhatToEat() {
   const [randomIndex, setRandomIndex] = useState(-1);
   const [randomStyles, setRandomStyles] = useState(initializeStyles(meals));
 
-  // console.log(
-  //   document.body.clientWidth,
-  //   document.body.clientHeight,
-  //   window.innerHeight,
-  //   randomStyles
-  // );
 
   const handleStart = () => {
     setIsStart(true);
@@ -114,8 +108,13 @@ function WhatToEat() {
         ) : null}
       </div>
 
-      {isStart && meals.length ? (
-        <div className='text-gray-600'>
+      {meals.length ? (
+        <div
+          className={
+            "text-gray-600 transition-all duration-1000 ease-in-out " +
+            (isStart ? "text-opacity-100" : "text-opacity-0")
+          }
+        >
           {meals.map((item, index) => (
             <div
               key={index}
