@@ -56,22 +56,29 @@ const initializeStyles = (array: string[]) => {
 
 let randomIndexTimer: NodeJS.Timeout;
 let randomStylesTimer: NodeJS.Timeout;
+const countLimit = 30;
 function WhatToEat() {
   const [clickCount, setClickCount] = useState(0);
   const [isStart, setIsStart] = useState(false);
   const [randomIndex, setRandomIndex] = useState(-1);
   const [randomStyles, setRandomStyles] = useState(initializeStyles(meals));
 
-
   const handleStart = () => {
+    if (clickCount === countLimit) return setClickCount((prev) => prev + 1);
     setIsStart(true);
+
+    // Start once immediately rather than waiting for 1s
+    // setTimeout(() => {
+    //   setRandomStyles(initializeStyles(meals));
+    // }, 50);
+
     randomIndexTimer = setInterval(() => {
       setRandomIndex(Math.floor(Math.random() * meals.length));
     }, 50);
 
     randomStylesTimer = setInterval(() => {
       setRandomStyles(initializeStyles(meals));
-    }, 500);
+    }, 1000);
   };
 
   const handleStop = () => {
@@ -84,12 +91,24 @@ function WhatToEat() {
   return (
     <div className='h-screen flex flex-col justify-center items-center'>
       <div className='relative z-20'>
-        <div className='text-lg  text-gray-700'>今天吃什么，吃什么？</div>
-        <div className='text-red-400 text-2xl font-bold  m-5'>
-          {clickCount < 3 ? meals[randomIndex] : "这么作，别吃了！！"}
+        <div className='text-xl  text-black p-5'>
+          今天吃什么，
+          <span
+            className={
+              "text-2xl inline-block " +
+              (isStart ? "animate-spin" : "animate-none")
+            }
+          >
+            {clickCount && clickCount <= countLimit && !isStart
+              ? "吃这个！"
+              : "吃什么？"}
+          </span>
+        </div>
+        <div className='text-red-400 text-3xl font-bold  m-5'>
+          {clickCount <= countLimit ? meals[randomIndex] : "这么作，别吃了！！"}
         </div>
 
-        {clickCount < 3 ? (
+        {clickCount <= countLimit ? (
           isStart ? (
             <button
               className='bg-red-500 hover:bg-red-600 text-white shadow-lg rounded-lg px-10 py-3 m-5'
@@ -110,16 +129,20 @@ function WhatToEat() {
 
       {meals.length ? (
         <div
+          style={{ display: isStart ? "block" : "none" }}
           className={
-            "text-gray-600 transition-all duration-1000 ease-in-out " +
-            (isStart ? "text-opacity-100" : "text-opacity-0")
+            "text-gray-600 "
+            //+"transition-all duration-200 ease-in-out " +
+            // (isStart ? "text-opacity-100" : "text-opacity-0")
+            // isStart ? "visible" : "invisible"
           }
         >
           {meals.map((item, index) => (
             <div
               key={index}
+              className='fixed transition-all duration-1000 linear'
               style={{
-                position: "fixed",
+                // position: "fixed",
                 top: `${randomStyles[index].top}px`,
                 left: `${randomStyles[index].left}px`,
                 fontSize: `${randomStyles[index].font}px`,
