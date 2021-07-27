@@ -89,10 +89,11 @@ function WhatToEat() {
   const [randomIndex, setRandomIndex] = useState(-1);
   const [meals, setMeals] = useState(homeMeals);
   const [mealIndex, setMealIndex] = useState(0);
-  const [randomStyles, setRandomStyles] = useState(initializeStyles(meals));
+  const [randomStyles, setRandomStyles] = useState(initializeStyles(homeMeals));
 
   useEffect(() => {
     setMeals(combinedMeals[mealIndex]);
+    setRandomStyles(initializeStyles(combinedMeals[mealIndex]));
   }, [mealIndex]);
 
   const handleStart = () => {
@@ -121,6 +122,7 @@ function WhatToEat() {
   };
 
   const handleDoubleClick = () => {
+    if (isStart) return;
     setMealIndex((prev) => (prev === 0 ? 1 : 0));
   };
 
