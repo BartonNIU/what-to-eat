@@ -129,18 +129,18 @@ function WhatToEat() {
 
   return (
     <div
-      className='h-screen flex flex-col justify-center items-center'
+      className='h-full w-full flex flex-col justify-center items-center'
       onDoubleClick={handleDoubleClick}
     >
       <div className='relative z-20'>
-        <div className='text-xl  text-black p-5'>
+        <div className='text-xl  text-black dark:text-white p-5'>
           今天吃什么，
           <span
             className={
               " text-2xl inline-block " +
               (isStart
-                ? " text-blue-500 animate-spin"
-                : "text-black animate-none")
+                ? " text-blue-500 dark:text-pink-400 animate-spin"
+                : "animate-none")
             }
           >
             {clickCount && clickCount <= countLimit && !isStart
@@ -175,7 +175,7 @@ function WhatToEat() {
         <div
           style={{ display: isStart ? "block" : "none" }}
           className={
-            "text-gray-600 "
+            "text-gray-600 dark:text-gray-200 "
             //+"transition-all duration-200 ease-in-out " +
             // (isStart ? "text-opacity-100" : "text-opacity-0")
             // isStart ? "visible" : "invisible"
