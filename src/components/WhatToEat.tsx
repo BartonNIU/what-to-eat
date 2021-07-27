@@ -124,6 +124,7 @@ function WhatToEat() {
   const handleDoubleClick = () => {
     if (isStart) return;
     setMealIndex((prev) => (prev === 0 ? 1 : 0));
+    setClickCount(0);
   };
 
   return (
