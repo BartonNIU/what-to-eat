@@ -56,7 +56,7 @@ const initializeStyles = (array: string[]) => {
 
 let randomIndexTimer: NodeJS.Timeout;
 let randomStylesTimer: NodeJS.Timeout;
-const countLimit = 30;
+const countLimit = process.env.NODE_ENV === "development" ? 30 : 3;
 function WhatToEat() {
   const [clickCount, setClickCount] = useState(0);
   const [isStart, setIsStart] = useState(false);
