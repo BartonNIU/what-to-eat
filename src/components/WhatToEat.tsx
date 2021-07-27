@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const meals = [
+const homeMeals = [
   "肥肠面",
   "螺蛳粉",
   "回锅肉",
@@ -32,6 +32,28 @@ const meals = [
   "红烧排骨",
   "孜然羊肉",
 ];
+
+const restaurantMeals = [
+  "Brunch",
+  "泰国菜",
+  "越南菜",
+  "韩国菜",
+  "印度菜",
+  "烧烤",
+  "火锅",
+  "大盘鸡",
+  "麻辣干锅",
+  "新疆菜",
+  "湖南菜",
+  "早茶",
+  "北京烤鸭",
+  "意大利菜",
+  "奶茶",
+  "日本菜",
+  "小笼包",
+];
+
+const combinedMeals = [homeMeals, restaurantMeals];
 
 const getRandomTop = () => {
   return Math.ceil(Math.random() * window.innerHeight);
@@ -65,7 +87,13 @@ function WhatToEat() {
   const [clickCount, setClickCount] = useState(0);
   const [isStart, setIsStart] = useState(false);
   const [randomIndex, setRandomIndex] = useState(-1);
+  const [meals, setMeals] = useState(homeMeals);
+  const [mealIndex, setMealIndex] = useState(0);
   const [randomStyles, setRandomStyles] = useState(initializeStyles(meals));
+
+  useEffect(() => {
+    setMeals(combinedMeals[mealIndex]);
+  }, [mealIndex]);
 
   const handleStart = () => {
     if (clickCount === countLimit) return setClickCount((prev) => prev + 1);
@@ -92,15 +120,24 @@ function WhatToEat() {
     setIsStart(false);
   };
 
+  const handleDoubleClick = () => {
+    setMealIndex((prev) => (prev === 0 ? 1 : 0));
+  };
+
   return (
-    <div className='h-screen flex flex-col justify-center items-center'>
+    <div
+      className='h-screen flex flex-col justify-center items-center'
+      onDoubleClick={handleDoubleClick}
+    >
       <div className='relative z-20'>
         <div className='text-xl  text-black p-5'>
           今天吃什么，
           <span
             className={
-              "text-2xl inline-block " +
-              (isStart ? "animate-spin" : "animate-none")
+              " text-white pl-4 py-2 text-2xl inline-block " +
+              (isStart
+                ? " bg-blue-500 animate-spin"
+                : "bg-yellow-500 animate-none")
             }
           >
             {clickCount && clickCount <= countLimit && !isStart
@@ -115,14 +152,14 @@ function WhatToEat() {
         {clickCount <= countLimit ? (
           isStart ? (
             <button
-              className='bg-red-500 hover:bg-red-600 text-white shadow-lg rounded-lg px-10 py-3 m-5'
+              className='bg-red-500 hover:bg-red-600 text-white text-lg shadow-lg rounded-lg px-10 py-3 m-5'
               onClick={handleStop}
             >
               停止
             </button>
           ) : (
             <button
-              className='bg-blue-500 hover:bg-blue-600 text-white shadow-lg rounded-lg px-10 py-3 m-5'
+              className='bg-blue-500 hover:bg-blue-600 text-white text-lg shadow-lg rounded-lg px-10 py-3 m-5'
               onClick={handleStart}
             >
               开始
