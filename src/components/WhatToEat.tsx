@@ -137,10 +137,10 @@ function WhatToEat() {
           今天吃什么，
           <span
             className={
-              " text-white pl-4 py-2 text-2xl inline-block " +
+              " text-2xl inline-block " +
               (isStart
-                ? " bg-blue-500 animate-spin"
-                : "bg-yellow-500 animate-none")
+                ? " text-blue-500 animate-spin"
+                : "text-black animate-none")
             }
           >
             {clickCount && clickCount <= countLimit && !isStart
