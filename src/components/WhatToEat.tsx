@@ -42,7 +42,11 @@ const getRandomLeft = () => {
 };
 
 const getRandomFontSize = () => {
-  return Math.ceil((Math.random() * window.innerWidth) / 50) + 10;
+  return (
+    Math.ceil(
+      (Math.random() * window.innerWidth) / (window.innerWidth > 500 ? 50 : 30)
+    ) + 10
+  );
 };
 
 const initializeStyles = (array: string[]) => {
@@ -140,7 +144,7 @@ function WhatToEat() {
           {meals.map((item, index) => (
             <div
               key={index}
-              className='fixed transition-all duration-1000 linear'
+              className='fixed transition-all duration-500 linear'
               style={{
                 // position: "fixed",
                 top: `${randomStyles[index].top}px`,
