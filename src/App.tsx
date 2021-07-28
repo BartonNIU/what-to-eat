@@ -5,7 +5,15 @@ import WhatToEat from "./components/WhatToEat";
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      // staleTime: Infinity, //5000,
+      // cacheTime: Infinity, //1000 * 60 * 60 * 24 * 2, // 2 days
+    },
+  },
+});
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);

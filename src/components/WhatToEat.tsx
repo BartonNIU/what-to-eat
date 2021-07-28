@@ -222,7 +222,12 @@ function WhatToEat() {
           ))}
         </div>
       ) : null}
-      {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} /> : null}
+      {isModalOpen ? (
+        <Modal
+          setIsModalOpen={setIsModalOpen}
+          dataProps={{ status, data, error }}
+        />
+      ) : null}
     </div>
   );
 }
