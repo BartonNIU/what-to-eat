@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useQuery } from "react-query";
+import { getRecipesByName } from "../apis/recipes";
 import { api } from "../services/api";
+import { getRandomFontSize } from "../utils/font";
+import { getRandomLeft, getRandomTop } from "../utils/position";
 import Modal from "./Modal";
 
 const homeMeals = [
@@ -57,22 +61,6 @@ const restaurantMeals = [
 
 const combinedMeals = [homeMeals, restaurantMeals];
 
-const getRandomTop = () => {
-  return Math.ceil(Math.random() * window.innerHeight);
-};
-
-const getRandomLeft = () => {
-  return Math.ceil(Math.random() * window.innerWidth);
-};
-
-const getRandomFontSize = () => {
-  return (
-    Math.ceil(
-      (Math.random() * window.innerWidth) / (window.innerWidth > 500 ? 50 : 30)
-    ) + 10
-  );
-};
-
 const initializeStyles = (array: string[]) => {
   return array.map((item) => ({
     top: getRandomTop(),
@@ -93,6 +81,16 @@ function WhatToEat() {
   const [mealIndex, setMealIndex] = useState(0);
   const [randomStyles, setRandomStyles] = useState(initializeStyles(homeMeals));
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { status, data, error } = useQuery(
+    "recipes",
+    () => getRecipesByName(meals[randomIndex]),
+    {
+      enabled: isModalOpen,
+    }
+  );
+
+  console.log(status, data, error);
 
   useEffect(() => {
     setMeals(combinedMeals[mealIndex]);
@@ -125,14 +123,7 @@ function WhatToEat() {
     console.log(meals[randomIndex]);
   };
 
-  const handleRecipe = async () => {
-    // try {
-    //   const response = await api.get(`?keyword=${meals[randomIndex]}&num=1`);
-    //   console.log(response);
-    // } catch (error) {
-    //   console.error(error);
-    // }
-
+  const handleModalClick = async () => {
     setIsModalOpen(true);
   };
 
@@ -171,7 +162,7 @@ function WhatToEat() {
               {meals[randomIndex] && !isStart ? (
                 <span
                   className='bg-yellow-500 text-white text-sm align-middle px-3 py-1 ml-2 rounded-md cursor-pointer'
-                  onClick={handleRecipe}
+                  onClick={handleModalClick}
                 >
                   查看菜谱
                 </span>
@@ -192,10 +183,13 @@ function WhatToEat() {
             </button>
           ) : (
             <button
-              className='bg-blue-500 hover:bg-blue-600 text-white text-lg shadow-lg rounded-lg px-10 py-3 m-5'
+              className={
+                "bg-blue-500 hover:bg-blue-600 text-white text-lg shadow-lg rounded-lg  py-3 m-5 " +
+                (clickCount > 0 ? "px-6" : "px-10")
+              }
               onClick={handleStart}
             >
-              开始
+              {clickCount > 0 ? "再来一次" : " 开始"}
             </button>
           )
         ) : null}
