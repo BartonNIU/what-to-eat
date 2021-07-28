@@ -4,7 +4,7 @@ import { getRecipesByName } from "../apis/recipes";
 import { api } from "../services/api";
 import { getRandomFontSize } from "../utils/font";
 import { getRandomLeft, getRandomTop } from "../utils/position";
-import Modal from "./Modal";
+import Recipe from "./Recipe";
 
 const homeMeals = [
   "肥肠面",
@@ -155,16 +155,16 @@ function WhatToEat() {
               : "吃什么？"}
           </span>
         </div>
-        <div className='text-red-400 text-3xl font-bold  m-5'>
+        <div className='text-red-500 text-3xl font-bold  m-5'>
           {clickCount <= countLimit ? (
             <div>
               {meals[randomIndex]}
               {meals[randomIndex] && !isStart ? (
                 <span
-                  className='bg-yellow-500 text-white text-sm align-middle px-3 py-1 ml-2 rounded-md cursor-pointer'
+                  className='bg-pink-500 text-white text-sm align-middle px-3 py-1 ml-2 rounded-md cursor-pointer'
                   onClick={handleModalClick}
                 >
-                  查看菜谱
+                  菜谱
                 </span>
               ) : null}
             </div>
@@ -223,7 +223,7 @@ function WhatToEat() {
         </div>
       ) : null}
       {isModalOpen ? (
-        <Modal
+        <Recipe
           setIsModalOpen={setIsModalOpen}
           dataProps={{ status, data, error }}
         />
