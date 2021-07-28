@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { api } from "../services/api";
+import Modal from "./Modal";
 
 const homeMeals = [
   "肥肠面",
@@ -90,6 +92,7 @@ function WhatToEat() {
   const [meals, setMeals] = useState(homeMeals);
   const [mealIndex, setMealIndex] = useState(0);
   const [randomStyles, setRandomStyles] = useState(initializeStyles(homeMeals));
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setMeals(combinedMeals[mealIndex]);
@@ -119,12 +122,25 @@ function WhatToEat() {
     clearInterval(randomIndexTimer);
     clearInterval(randomStylesTimer);
     setIsStart(false);
+    console.log(meals[randomIndex]);
+  };
+
+  const handleRecipe = async () => {
+    // try {
+    //   const response = await api.get(`?keyword=${meals[randomIndex]}&num=1`);
+    //   console.log(response);
+    // } catch (error) {
+    //   console.error(error);
+    // }
+
+    setIsModalOpen(true);
   };
 
   const handleDoubleClick = () => {
     if (isStart) return;
     setMealIndex((prev) => (prev === 0 ? 1 : 0));
     setClickCount(0);
+    setRandomIndex(-1);
   };
 
   return (
@@ -149,7 +165,21 @@ function WhatToEat() {
           </span>
         </div>
         <div className='text-red-400 text-3xl font-bold  m-5'>
-          {clickCount <= countLimit ? meals[randomIndex] : "这么作，别吃了！！"}
+          {clickCount <= countLimit ? (
+            <div>
+              {meals[randomIndex]}
+              {meals[randomIndex] && !isStart ? (
+                <span
+                  className='bg-yellow-500 text-white text-sm align-middle px-3 py-1 ml-2 rounded-md cursor-pointer'
+                  onClick={handleRecipe}
+                >
+                  查看菜谱
+                </span>
+              ) : null}
+            </div>
+          ) : (
+            "这么作，别吃了！！"
+          )}
         </div>
 
         {clickCount <= countLimit ? (
@@ -198,6 +228,7 @@ function WhatToEat() {
           ))}
         </div>
       ) : null}
+      {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} /> : null}
     </div>
   );
 }
