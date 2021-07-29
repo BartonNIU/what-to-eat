@@ -1,2 +1,2 @@
 ##
-http://localhost:5300
+http://localhost:5300/api/v1/recipe?keyword=孜然羊肉
