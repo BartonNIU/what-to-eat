@@ -90,7 +90,7 @@ function WhatToEat() {
     }
   );
 
-  console.log(status, data, error);
+  // console.log(status, data, error);
 
   useEffect(() => {
     setMeals(combinedMeals[mealIndex]);
@@ -112,7 +112,7 @@ function WhatToEat() {
 
     randomStylesTimer = setInterval(() => {
       setRandomStyles(initializeStyles(meals));
-    }, 1000);
+    }, 500);
   };
 
   const handleStop = () => {
