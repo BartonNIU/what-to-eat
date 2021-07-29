@@ -1,5 +1,6 @@
 import React from "react";
 import { RiCloseFill } from "react-icons/ri";
+import { IoFastFoodOutline } from "react-icons/io5";
 
 function Recipe({ setIsModalOpen, dataProps }: any) {
   const handleClick = () => {
@@ -17,7 +18,7 @@ function Recipe({ setIsModalOpen, dataProps }: any) {
       </div>
       {status === "success" ? (
         data.data.result.result ? (
-          <div className='recipe-cont'>
+          <div className=' md:w-4/5 lg:w-2/5 2xl:w-1/3'>
             <div className='w-full h-auto'>
               <img
                 className='w-full h-full object-cover'
@@ -75,12 +76,19 @@ function Recipe({ setIsModalOpen, dataProps }: any) {
             </div>
           </div>
         ) : (
-          <div>啊，没有找到相关的菜谱</div>
+          <div className='h-1/2 flex  justify-center align-middle text-xl '>
+            啊，没有找到相关的菜谱
+          </div>
         )
       ) : error ? (
         <div>{error.message}</div>
       ) : (
-        <div>加载中...</div>
+        <div>
+          <div className='h-full flex align-middle text-xl animate-spin scale-150'>
+            <IoFastFoodOutline />
+          </div>
+          <p>稍等片刻，加载中...</p>
+        </div>
       )}
     </div>
   );
