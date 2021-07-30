@@ -1,17 +1,28 @@
 import React from "react";
-import { RiCloseFill } from "react-icons/ri";
+import { RiCloseFill, RiArrowUpLine } from "react-icons/ri";
 import { IoFastFoodOutline } from "react-icons/io5";
+import { useRef } from "react";
 
 function Recipe({ setIsModalOpen, dataProps }: any) {
+  const { status, data, error } = dataProps;
+
+  const topRef = useRef<HTMLDivElement>(null);
+
   const handleClick = () => {
     setIsModalOpen(false);
   };
-  const { status, data, error } = dataProps;
 
+  const handleBackToTop = () => {
+    // console.log("clicked");
+
+    topRef.current && topRef.current.scrollIntoView({ behavior: "smooth" });
+    // document.body.scrollTop = 0;
+    // document.documentElement.scrollTop = 0;
+  };
   return (
     <div
       className={
-        "bg-yellow-100 dark:bg-gray-800  dark:text-white  fixed  z-50 h-full w-full overflow-auto flex justify-center " +
+        "bg-yellow-100 dark:bg-gray-800  dark:text-gray-100  fixed  z-50 h-full w-full overflow-auto flex justify-center " +
         (status === "success" && data.data.result.result ? "" : "items-center")
       }
     >
@@ -24,7 +35,7 @@ function Recipe({ setIsModalOpen, dataProps }: any) {
       {status === "success" ? (
         data.data.result.result ? (
           <div className=' md:w-4/5 lg:w-2/5 2xl:w-1/3'>
-            <div className='w-full h-auto'>
+            <div ref={topRef} className='w-full h-auto '>
               <img
                 className='w-full h-full object-cover'
                 src={data.data.result.result.list[0].pic}
@@ -32,7 +43,7 @@ function Recipe({ setIsModalOpen, dataProps }: any) {
               />
             </div>
             <div className='p-5 '>
-              <div className='text-2xl font-medium pb-5'>
+              <div className='text-2xl font-medium pb-5 '>
                 {data.data.result.result.list[0].name}
               </div>
               <div className='text-justify '>
@@ -78,6 +89,12 @@ function Recipe({ setIsModalOpen, dataProps }: any) {
                   )}
                 </ul>
               </div>
+            </div>
+            <div
+              className='text-3xl font-bold text-gray-500 dark:text-yellow-200 flex justify-end p-5 cursor-pointer'
+              onClick={handleBackToTop}
+            >
+              <RiArrowUpLine />
             </div>
           </div>
         ) : (
