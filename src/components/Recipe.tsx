@@ -9,9 +9,14 @@ function Recipe({ setIsModalOpen, dataProps }: any) {
   const { status, data, error } = dataProps;
 
   return (
-    <div className='bg-yellow-100 dark:bg-gray-800  dark:text-white fixed z-50 h-full w-full overflow-auto flex justify-center align-middle'>
+    <div
+      className={
+        "bg-yellow-100 dark:bg-gray-800  dark:text-white  fixed  z-50 h-full w-full overflow-auto flex justify-center " +
+        (status === "success" && data.data.result.result ? "" : "items-center")
+      }
+    >
       <div
-        className='bg-blue-300 text-white text-3xl fixed top-5 right-5 cursor-pointer '
+        className='bg-yellow-300 text-white text-3xl absolute top-5 right-5 rounded-full cursor-pointer '
         onClick={handleClick}
       >
         <RiCloseFill />
@@ -76,15 +81,13 @@ function Recipe({ setIsModalOpen, dataProps }: any) {
             </div>
           </div>
         ) : (
-          <div className='h-1/2 flex  justify-center align-middle text-xl '>
-            啊，没有找到相关的菜谱
-          </div>
+          <div className='h-10 '>啊，没有找到相关的菜谱，换一个吧 :(</div>
         )
       ) : error ? (
         <div>{error.message}</div>
       ) : (
         <div>
-          <div className='h-full flex align-middle text-xl animate-spin scale-150'>
+          <div className=' text-5xl flex justify-center animate-bounce scale-150  mb-10'>
             <IoFastFoodOutline />
           </div>
           <p>稍等片刻，加载中...</p>
