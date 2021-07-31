@@ -86,7 +86,7 @@ function WhatToEat() {
     "recipes",
     () => getRecipesByName(meals[randomIndex]),
     {
-      enabled: !isStart && !!meals[randomIndex], //isModalOpen, //() //trigger when stop and not the initial state, issue is that it could be triggered in a high frequency
+      enabled: (!isStart && !!meals[randomIndex]) || isModalOpen, //, //() //trigger when stop and not the initial state, issue is that it could be triggered in a high frequency
     }
   );
 
