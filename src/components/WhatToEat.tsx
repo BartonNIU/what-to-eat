@@ -86,7 +86,7 @@ function WhatToEat() {
     "recipes",
     () => getRecipesByName(meals[randomIndex]),
     {
-      enabled: isModalOpen,
+      enabled: isModalOpen, //(!isStart && !!meals[randomIndex]) //trigger when stop and not the initial state, issue is that it could be triggered in a high frequency
     }
   );
 
@@ -140,7 +140,12 @@ function WhatToEat() {
       onDoubleClick={handleDoubleClick}
     >
       <div className='relative z-20'>
-        <div className='text-xl  text-black dark:text-white p-5'>
+        <div
+          className={
+            "text-xl  text-black dark:text-white p-5 " +
+            (isStart ? " text-blue-500 dark:text-pink-400" : "")
+          }
+        >
           今天吃什么，
           <span
             className={
@@ -225,7 +230,7 @@ function WhatToEat() {
       {isModalOpen ? (
         <Recipe
           setIsModalOpen={setIsModalOpen}
-          dataProps={{ status, data, error }}
+          dataProps={{ status, data: data?.data.result, error }}
         />
       ) : null}
     </div>
