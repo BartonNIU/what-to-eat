@@ -86,11 +86,11 @@ function WhatToEat() {
     "recipes",
     () => getRecipesByName(meals[randomIndex]),
     {
-      enabled: isModalOpen, //(!isStart && !!meals[randomIndex]) //trigger when stop and not the initial state, issue is that it could be triggered in a high frequency
+      enabled: !isStart && !!meals[randomIndex], //isModalOpen, //() //trigger when stop and not the initial state, issue is that it could be triggered in a high frequency
     }
   );
 
-  // console.log(status, data, error);
+  console.log(status, data, error);
 
   useEffect(() => {
     setMeals(combinedMeals[mealIndex]);
@@ -164,7 +164,10 @@ function WhatToEat() {
           {clickCount <= countLimit ? (
             <div>
               {meals[randomIndex]}
-              {meals[randomIndex] && !isStart ? (
+              {meals[randomIndex] &&
+              !isStart &&
+              status === "success" &&
+              data?.data.result ? (
                 <span
                   className='bg-pink-500 text-white text-sm align-middle px-3 py-1 ml-2 rounded-md cursor-pointer'
                   onClick={handleModalClick}
