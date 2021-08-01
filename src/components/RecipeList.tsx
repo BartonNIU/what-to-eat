@@ -7,15 +7,16 @@ import { useQuery } from "react-query";
 import { getRecipesByName } from "../apis/recipes";
 import { isError } from "../utils/validation";
 
-function RecipeList() {
+function RecipeList({ setIsModalOpen, query }: any) {
   const history = useHistory();
   const location = useLocation();
   const { search } = location;
-  const query = new URLSearchParams(search);
+  //const query = new URLSearchParams(search);
   console.log(query);
 
   const { status, data, error } = useQuery("recipe", () =>
-    getRecipesByName(query.get("name") || "")
+    // getRecipesByName(query.get("name") || "")
+    getRecipesByName(query)
   );
   console.log("data", data);
 
@@ -23,7 +24,8 @@ function RecipeList() {
   const topRef = useRef<HTMLDivElement>(null);
 
   const handleClick = () => {
-    history.goBack();
+    //history.goBack();
+    setIsModalOpen(false);
   };
 
   const handleBackToTop = () => {

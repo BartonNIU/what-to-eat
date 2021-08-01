@@ -5,6 +5,7 @@ import { api } from "../services/api";
 import { getRandomFontSize } from "../utils/font";
 import { getRandomLeft, getRandomTop } from "../utils/position";
 import { useHistory } from "react-router-dom";
+import RecipeList from "./RecipeList";
 
 const homeMeals = [
   "肥肠面",
@@ -128,10 +129,10 @@ function WhatToEat() {
 
   const handleModalClick = async () => {
     setIsModalOpen(true);
-    history.push({
-      pathname: "/recipe",
-      search: `?name=${meals[randomIndex]}`,
-    });
+    // history.push({
+    //   pathname: "/recipe",
+    //   search: `?name=${meals[randomIndex]}`,
+    // });
   };
 
   const handleDoubleClick = () => {
@@ -237,12 +238,12 @@ function WhatToEat() {
           ))}
         </div>
       ) : null}
-      {/* {isModalOpen ? (
+      {isModalOpen ? (
         <RecipeList
           setIsModalOpen={setIsModalOpen}
-          dataProps={{ status, data: data?.data.result, error }}
+          query={meals[randomIndex]}
         />
-      ) : null} */}
+      ) : null}
     </div>
   );
 }
