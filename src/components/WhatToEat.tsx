@@ -4,7 +4,7 @@ import { getRecipesByName } from "../apis/recipes";
 import { api } from "../services/api";
 import { getRandomFontSize } from "../utils/font";
 import { getRandomLeft, getRandomTop } from "../utils/position";
-import Recipe from "./Recipe";
+import { useHistory } from "react-router-dom";
 
 const homeMeals = [
   "肥肠面",
@@ -82,13 +82,15 @@ function WhatToEat() {
   const [randomStyles, setRandomStyles] = useState(initializeStyles(homeMeals));
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { status, data, error, refetch } = useQuery(
-    "recipes",
-    () => getRecipesByName(meals[randomIndex]),
-    {
-      enabled: isModalOpen, //(!isStart && !!meals[randomIndex]) || isModalOpen, //, //() //trigger when stop and not the initial state, issue is that it could be triggered in a high frequency
-    }
-  );
+  const history = useHistory();
+
+  // const { status, data, error, refetch } = useQuery(
+  //   "recipes",
+  //   () => getRecipesByName(meals[randomIndex]),
+  //   {
+  //     enabled: isModalOpen, //(!isStart && !!meals [randomIndex]) || isModalOpen, //, //() //trigger when stop and not the initial state, issue is that it could be triggered in a high frequency
+  //   }
+  // );
 
   // console.log(status, data, error);
 
@@ -126,6 +128,10 @@ function WhatToEat() {
 
   const handleModalClick = async () => {
     setIsModalOpen(true);
+    history.push({
+      pathname: "/recipe",
+      search: `?name=${meals[randomIndex]}`,
+    });
   };
 
   const handleDoubleClick = () => {
@@ -231,12 +237,12 @@ function WhatToEat() {
           ))}
         </div>
       ) : null}
-      {isModalOpen ? (
-        <Recipe
+      {/* {isModalOpen ? (
+        <RecipeList
           setIsModalOpen={setIsModalOpen}
           dataProps={{ status, data: data?.data.result, error }}
         />
-      ) : null}
+      ) : null} */}
     </div>
   );
 }

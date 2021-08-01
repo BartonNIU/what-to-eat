@@ -2,15 +2,28 @@ import React from "react";
 import { RiCloseFill, RiArrowUpLine } from "react-icons/ri";
 import { IoFastFoodOutline } from "react-icons/io5";
 import { useRef } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import { useQuery } from "react-query";
+import { getRecipesByName } from "../apis/recipes";
+import { isError } from "../utils/validation";
 
-function Recipe({ setIsModalOpen, dataProps }: any) {
-  const { status, data, error } = dataProps;
+function RecipeList() {
+  const history = useHistory();
+  const location = useLocation();
+  const { search } = location;
+  const query = new URLSearchParams(search);
+  console.log(query);
+
+  const { status, data, error } = useQuery("recipe", () =>
+    getRecipesByName(query.get("name") || "")
+  );
   console.log("data", data);
 
+  const recipeData = data?.data.result;
   const topRef = useRef<HTMLDivElement>(null);
 
   const handleClick = () => {
-    setIsModalOpen(false);
+    history.goBack();
   };
 
   const handleBackToTop = () => {
@@ -24,7 +37,7 @@ function Recipe({ setIsModalOpen, dataProps }: any) {
     <div
       className={
         "bg-yellow-100 dark:bg-gray-800  dark:text-gray-100  fixed  z-50 h-full w-full overflow-auto flex justify-center " +
-        (status === "success" && data ? "" : "items-center")
+        (status === "success" && recipeData ? "" : "items-center")
       }
     >
       <div
@@ -34,27 +47,27 @@ function Recipe({ setIsModalOpen, dataProps }: any) {
         <RiCloseFill />
       </div>
       {status === "success" ? (
-        data ? (
+        recipeData ? (
           <div className=' md:w-4/5 lg:w-2/5 2xl:w-1/3'>
             <div ref={topRef} className='w-full h-auto '>
               <img
                 className='w-full h-full object-cover'
-                src={data.list[0].pic}
-                alt={data.list[0].name}
+                src={recipeData.list[0].pic}
+                alt={recipeData.list[0].name}
               />
             </div>
             <div className='p-5 '>
               <div className='text-2xl font-medium pb-5 '>
-                {data.list[0].name}
+                {recipeData.list[0].name}
               </div>
-              <div className='text-justify '>{data.list[0].content}</div>
+              <div className='text-justify '>{recipeData.list[0].content}</div>
 
               <div className='pt-5'>
                 <div className='font-semibold pb-2 text-left text-lg '>
                   用料
                 </div>
                 <ul>
-                  {data.list[0].material.map((item: any, index: any) => (
+                  {recipeData.list[0].material.map((item: any, index: any) => (
                     <li
                       key={index}
                       className='text-ml flex justify-between align-middle py-2 border-b border-gray-300'
@@ -67,7 +80,7 @@ function Recipe({ setIsModalOpen, dataProps }: any) {
               </div>
               <div className='pt-5'>
                 <ul>
-                  {data.list[0].process.map((item: any, index: any) => (
+                  {recipeData.list[0].process.map((item: any, index: any) => (
                     <li key={index} className='border-b border-gray-300 py-2'>
                       <div className='font-semibold pb-2 text-left  '>
                         步骤 {index + 1}
@@ -96,7 +109,7 @@ function Recipe({ setIsModalOpen, dataProps }: any) {
           <div className='h-10 '>啊，没有找到相关的菜谱，换一个吧 :(</div>
         )
       ) : error ? (
-        <div>{error.message}</div>
+        <div>{error instanceof Error && error.message}</div>
       ) : (
         <div>
           <div className=' text-5xl flex justify-center animate-bounce scale-150  mb-10'>
@@ -109,4 +122,4 @@ function Recipe({ setIsModalOpen, dataProps }: any) {
   );
 }
 
-export default Recipe;
+export default RecipeList;
