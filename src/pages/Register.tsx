@@ -1,10 +1,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { loginSchema } from "../utils/formSchema";
+import { registerSchema } from "../utils/formSchema";
 import { useHistory } from "react-router-dom";
 
-function Login() {
+function Register() {
   const history = useHistory();
   const {
     register,
@@ -12,7 +12,7 @@ function Login() {
     watch,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(registerSchema),
   });
 
   const onSubmit = (data: any) => {
@@ -21,13 +21,13 @@ function Login() {
 
   const handleClick = () => {
     history.push({
-      pathname: "/register",
+      pathname: "/login",
     });
   };
 
   return (
     <div className='h-full flex flex-col justify-center items-center'>
-      <div className='text-2xl font-bold'>登录</div>
+      <div className='text-2xl font-bold'>注册</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
           className='border-b-2 p-3 m-5'
@@ -38,19 +38,26 @@ function Login() {
         <input
           className='border-b-2 p-3 m-5'
           type='password'
-          placeholder='登录密码...'
+          placeholder='设置密码...'
           {...register("password")}
         />
-        <p className='text-red-500 mb-5'>{errors.password?.message}</p>
+        <p className='text-red-500 '>{errors.password?.message}</p>
+        <input
+          className='border-b-2 p-3 m-5'
+          type='password'
+          placeholder='再次输入密码...'
+          {...register("confirmPassword")}
+        />
+        <p className='text-red-500 mb-5'>{errors.confirmPassword?.message}</p>
         <button className='bg-blue-500 hover:bg-blue-600 text-white px-10 py-3'>
-          登录
+          注册
         </button>
       </form>
       <div className='pt-5 border-b border-gray-500' onClick={handleClick}>
-        还没账号？点此注册
+        已注册？点此登录
       </div>
     </div>
   );
 }
 
-export default Login;
+export default Register;

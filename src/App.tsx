@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import Home from "./pages/Home";
 import Recipe from "./pages/Recipe";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,6 +31,9 @@ function App() {
             </Route>
             <Route path='/login'>
               <Login />
+            </Route>
+            <Route path='/register'>
+              <Register />
             </Route>
           </Switch>
         </div>
