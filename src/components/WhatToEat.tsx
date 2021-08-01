@@ -82,15 +82,15 @@ function WhatToEat() {
   const [randomStyles, setRandomStyles] = useState(initializeStyles(homeMeals));
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { status, data, error } = useQuery(
+  const { status, data, error, refetch } = useQuery(
     "recipes",
     () => getRecipesByName(meals[randomIndex]),
     {
-      enabled: (!isStart && !!meals[randomIndex]) || isModalOpen, //, //() //trigger when stop and not the initial state, issue is that it could be triggered in a high frequency
+      enabled: isModalOpen, //(!isStart && !!meals[randomIndex]) || isModalOpen, //, //() //trigger when stop and not the initial state, issue is that it could be triggered in a high frequency
     }
   );
 
-  console.log(status, data, error);
+  // console.log(status, data, error);
 
   useEffect(() => {
     setMeals(combinedMeals[mealIndex]);
@@ -121,6 +121,7 @@ function WhatToEat() {
     clearInterval(randomStylesTimer);
     setIsStart(false);
     console.log(meals[randomIndex]);
+    // refetch();
   };
 
   const handleModalClick = async () => {
@@ -164,10 +165,10 @@ function WhatToEat() {
           {clickCount <= countLimit ? (
             <div>
               {meals[randomIndex]}
-              {meals[randomIndex] &&
-              !isStart &&
-              status === "success" &&
-              data?.data.result ? (
+              {meals[randomIndex] && !isStart ? (
+                //   &&
+                // status === "success" &&
+                //   data?.data.result
                 <span
                   className='bg-pink-500 text-white text-sm align-middle px-3 py-1 ml-2 rounded-md cursor-pointer'
                   onClick={handleModalClick}
