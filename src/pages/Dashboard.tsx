@@ -3,6 +3,7 @@ import { combinedMeals } from "../constants/meals";
 import { AiOutlineMore } from "react-icons/ai";
 import { VscArrowLeft } from "react-icons/vsc";
 import { useHistory } from "react-router-dom";
+import Header from "../components/Header";
 
 function Dashboard() {
   const history = useHistory();
@@ -17,11 +18,6 @@ function Dashboard() {
     console.log(action);
 
     switch (action) {
-      case "backward":
-        history.goBack();
-        break;
-      case "settings":
-        break;
       case "edit":
         if (name) {
           setEditStatus((prev) => ({ ...prev, [name]: !prev[name] }));
@@ -49,14 +45,7 @@ function Dashboard() {
 
   return (
     <div className=''>
-      <div className='flex justify-between text-2xl p-2'>
-        <div className='back-icon' data-action='backward' onClick={handleClick}>
-          <VscArrowLeft />
-        </div>
-        <div className='settings' data-action='settings' onClick={handleClick}>
-          <AiOutlineMore />
-        </div>
-      </div>
+      <Header />
 
       <div className=''>
         {Object.entries(defaultMeals).map(([key, meals]) => (
@@ -76,7 +65,7 @@ function Dashboard() {
               {meals.map((item, index) => (
                 <li
                   key={index}
-                  className='bg-yellow-700 text-white px-5 py-3 m-2 rounded-md'
+                  className='bg-yellow-700 text-white px-3 py-3 m-2 rounded-md'
                   style={{ writingMode: "vertical-lr", letterSpacing: "10px" }}
                 >
                   <span>{item} </span>

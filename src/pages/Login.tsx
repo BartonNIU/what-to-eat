@@ -5,6 +5,7 @@ import { loginSchema } from "../utils/formSchema";
 import { useHistory } from "react-router-dom";
 import { useQuery } from "react-query";
 import { login } from "../apis/auth";
+import Header from "../components/Header";
 
 function Login() {
   const history = useHistory();
@@ -48,36 +49,41 @@ function Login() {
   };
 
   return (
-    <div className='h-full flex flex-col justify-center items-center'>
-      <div className='text-2xl font-bold mb-5'>登录</div>
-      <div className='text-red-500 mb-3'>{error}</div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          className='border-b-2 p-3 m-2'
-          placeholder='你的邮箱...'
-          {...register("email")}
-        />
-        <div className='text-red-500 text-sm mb-3'>{errors.email?.message}</div>
-        <input
-          className='border-b-2 p-3 m-2'
-          type='password'
-          placeholder='登录密码...'
-          {...register("password")}
-        />
-        <div className='text-red-500 text-sm mb-3'>
-          {errors.password?.message}
+    <>
+      <Header />
+      <div className='h-full flex flex-col justify-center items-center'>
+        <div className='text-2xl font-bold mb-5'>登录</div>
+        <div className='text-red-500 mb-3'>{error}</div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <input
+            className='border-b-2 p-3 m-2'
+            placeholder='你的邮箱...'
+            {...register("email")}
+          />
+          <div className='text-red-500 text-sm mb-3'>
+            {errors.email?.message}
+          </div>
+          <input
+            className='border-b-2 p-3 m-2'
+            type='password'
+            placeholder='登录密码...'
+            {...register("password")}
+          />
+          <div className='text-red-500 text-sm mb-3'>
+            {errors.password?.message}
+          </div>
+          <button className='bg-blue-500 hover:bg-blue-600 text-white px-10 py-3'>
+            登录
+          </button>
+        </form>
+        <div
+          className='text-sm pt-5 border-b border-gray-500'
+          onClick={handleClick}
+        >
+          还没账号？点此注册
         </div>
-        <button className='bg-blue-500 hover:bg-blue-600 text-white px-10 py-3'>
-          登录
-        </button>
-      </form>
-      <div
-        className='text-sm pt-5 border-b border-gray-500'
-        onClick={handleClick}
-      >
-        还没账号？点此注册
       </div>
-    </div>
+    </>
   );
 }
 
