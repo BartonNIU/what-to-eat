@@ -6,61 +6,7 @@ import { getRandomFontSize } from "../utils/font";
 import { getRandomLeft, getRandomTop } from "../utils/position";
 import { useHistory } from "react-router-dom";
 import RecipeList from "./RecipeList";
-
-const homeMeals = [
-  "肥肠面",
-  "螺蛳粉",
-  "回锅肉",
-  "胡辣汤",
-  "面皮儿",
-  "方便面",
-  "焖面",
-  "火锅",
-  "大盘鸡",
-  "卤肉面",
-  "干锅",
-  "水饺",
-  "火锅面",
-  "水果沙拉",
-  "鸡蛋面",
-  "醋溜白菜",
-  "红烧肉",
-  "白吉馍",
-  "鸭血粉丝汤",
-  "手抓饼",
-  "煎包",
-  "油条",
-  "麻婆豆腐",
-  "酸汤肥牛",
-  "烤红薯",
-  "烤鱼",
-  "烧烤",
-  "巧克力",
-  "红烧排骨",
-  "孜然羊肉",
-];
-
-const restaurantMeals = [
-  "Brunch",
-  "泰国菜",
-  "越南菜",
-  "韩国菜",
-  "印度菜",
-  "烧烤",
-  "火锅",
-  "大盘鸡",
-  "麻辣干锅",
-  "新疆菜",
-  "湖南菜",
-  "早茶",
-  "北京烤鸭",
-  "意大利菜",
-  "奶茶",
-  "日本菜",
-  "小笼包",
-];
-
-const combinedMeals = [homeMeals, restaurantMeals];
+import { combinedMeals } from "../constants/meals";
 
 const initializeStyles = (array: string[]) => {
   return array.map((item) => ({
@@ -78,9 +24,11 @@ function WhatToEat() {
   const [clickCount, setClickCount] = useState(0);
   const [isStart, setIsStart] = useState(false);
   const [randomIndex, setRandomIndex] = useState(-1);
-  const [meals, setMeals] = useState(homeMeals);
-  const [mealIndex, setMealIndex] = useState(0);
-  const [randomStyles, setRandomStyles] = useState(initializeStyles(homeMeals));
+  const [meals, setMeals] = useState(combinedMeals.home);
+  const [mealKey, setMealKey] = useState("home");
+  const [randomStyles, setRandomStyles] = useState(
+    initializeStyles(combinedMeals.home)
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const history = useHistory();
@@ -96,9 +44,9 @@ function WhatToEat() {
   // console.log(status, data, error);
 
   useEffect(() => {
-    setMeals(combinedMeals[mealIndex]);
-    setRandomStyles(initializeStyles(combinedMeals[mealIndex]));
-  }, [mealIndex]);
+    setMeals(combinedMeals[mealKey]);
+    setRandomStyles(initializeStyles(combinedMeals[mealKey]));
+  }, [mealKey]);
 
   const handleStart = () => {
     if (clickCount === countLimit) return setClickCount((prev) => prev + 1);
@@ -137,7 +85,7 @@ function WhatToEat() {
 
   const handleDoubleClick = () => {
     if (isStart) return;
-    setMealIndex((prev) => (prev === 0 ? 1 : 0));
+    setMealKey((prev) => (prev === "home" ? "restaurant" : "home"));
     setClickCount(0);
     setRandomIndex(-1);
   };

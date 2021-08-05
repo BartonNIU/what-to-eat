@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Recipe from "./pages/Recipe";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,6 +35,9 @@ function App() {
             </Route>
             <Route path='/register'>
               <Register />
+            </Route>
+            <Route path='/dashboard'>
+              <Dashboard />
             </Route>
           </Switch>
         </div>

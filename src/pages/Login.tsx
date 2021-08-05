@@ -32,8 +32,9 @@ function Login() {
   const onSubmit = async (data: any) => {
     console.log(data);
     try {
-      const result = await login(data.email, data.password);
-      console.log(result);
+      const response = await login(data.email, data.password);
+      console.log(response, response.data.accessToken);
+      localStorage.setItem("accessToken", response.data.accessToken);
     } catch (error) {
       console.error(error.message, error.response);
       setError(error.response?.data.msg || error.message);

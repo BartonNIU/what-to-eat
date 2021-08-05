@@ -5,11 +5,3 @@ export const getRecipesByName = (name: string, number = 1) => {
   return api.get(`/recipe?keyword=${name}&num=${number}`);
 };
 
-export const getRecipesByUser = (email: string) => {
-  const token = localStorage.getItem("token");
-  return api.get(`/recipe?auth=${email}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-};

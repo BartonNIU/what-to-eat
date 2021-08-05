@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../utils/formSchema";
 import { useHistory } from "react-router-dom";
+import { registerRequest } from "../apis/auth";
 
 function Register() {
   const history = useHistory();
@@ -15,8 +16,17 @@ function Register() {
     resolver: yupResolver(registerSchema),
   });
 
-  const onSubmit = (data: any) => {
+  const [error, setError] = useState("");
+
+  const onSubmit = async (data: any) => {
     console.log(data);
+    try {
+      const result = await registerRequest(data.email, data.password);
+      console.log(result);
+    } catch (error) {
+      console.error(error.message, error.response);
+      setError(error.response?.data.msg || error.message);
+    }
   };
 
   const handleClick = () => {
@@ -28,6 +38,7 @@ function Register() {
   return (
     <div className='h-full flex flex-col justify-center items-center'>
       <div className='text-2xl font-bold mb-5'>注册</div>
+      <div className='text-red-500 mb-3'>{error}</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
           className='border-b-2 p-3 m-2'
