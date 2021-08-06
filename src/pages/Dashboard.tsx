@@ -50,7 +50,7 @@ function Dashboard() {
       <div className=''>
         {Object.entries(defaultMeals).map(([key, meals]) => (
           <div className='m-5' key={key}>
-            <div className='flex justify-between text-xl mb-3'>
+            <div className=' dark:text-white flex justify-between text-xl mb-3'>
               <span> {key === "home" ? "家庭菜单" : "下馆子菜单"}</span>
               <span
                 className='bg-gray-300 text-xs px-3 py-1 rounded-full'
@@ -58,7 +58,7 @@ function Dashboard() {
                 data-name={key}
                 onClick={handleClick}
               >
-                {editStatus[key] ? "退出编辑" : "编辑"}
+                {editStatus[key] ? "保存" : "编辑"}
               </span>
             </div>
             <ul className='flex  justify-start items-start overflow-x-auto'>
@@ -90,7 +90,7 @@ function Dashboard() {
           data-action='login'
           onClick={handleClick}
         >
-          登录创建更多菜单
+          登录创建菜单
         </button>
       </div>
     </div>

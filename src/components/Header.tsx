@@ -20,7 +20,7 @@ function Header() {
     }
   };
   return (
-    <div className='flex justify-between text-2xl p-2'>
+    <div className='fixed w-full flex justify-between text-2xl p-2'>
       <div className='back-icon' data-action='backward' onClick={handleClick}>
         <VscArrowLeft />
       </div>
