@@ -6,17 +6,19 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getRecipesByName } from "../apis/recipes";
 import { isError } from "../utils/validation";
+import Share from "./Share";
 
-function RecipeList({ setIsModalOpen, query }: any) {
+function RecipeList() {
   const history = useHistory();
   const location = useLocation();
   const { search } = location;
-  //const query = new URLSearchParams(search);
+  const query = new URLSearchParams(search);
   console.log(query);
 
-  const { status, data, error } = useQuery("recipe", () =>
-    // getRecipesByName(query.get("name") || "")
-    getRecipesByName(query)
+  const { status, data, error } = useQuery(
+    "recipe",
+    () => getRecipesByName(query.get("name") || "")
+    //getRecipesByName(query)
   );
   console.log("data", data);
 
@@ -24,8 +26,8 @@ function RecipeList({ setIsModalOpen, query }: any) {
   const topRef = useRef<HTMLDivElement>(null);
 
   const handleClick = () => {
-    //history.goBack();
-    setIsModalOpen(false);
+    history.goBack();
+    //setIsModalOpen(false);
   };
 
   const handleBackToTop = () => {
@@ -100,11 +102,13 @@ function RecipeList({ setIsModalOpen, query }: any) {
                 </ul>
               </div>
             </div>
-            <div
-              className='text-3xl font-bold text-gray-500 dark:text-yellow-200 flex justify-end p-5 cursor-pointer'
-              onClick={handleBackToTop}
-            >
-              <RiArrowUpLine />
+            <div className='text-3xl font-bold text-gray-500 dark:text-yellow-200 flex justify-between p-5 cursor-pointer'>
+              <div className='c'>
+                <Share name={query.get("name") || ""} id={12} />
+              </div>
+              <div className='d' onClick={handleBackToTop}>
+                <RiArrowUpLine />
+              </div>
             </div>
           </div>
         ) : (

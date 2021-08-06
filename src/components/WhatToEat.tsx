@@ -76,11 +76,11 @@ function WhatToEat() {
   };
 
   const handleModalClick = async () => {
-    setIsModalOpen(true);
-    // history.push({
-    //   pathname: "/recipe",
-    //   search: `?name=${meals[randomIndex]}`,
-    // });
+    //setIsModalOpen(true);
+    history.push({
+      pathname: "/recipe",
+      search: `?name=${meals[randomIndex]}`,
+    });
   };
 
   const handleDoubleClick = () => {
@@ -186,12 +186,12 @@ function WhatToEat() {
           ))}
         </div>
       ) : null}
-      {isModalOpen ? (
+      {/* {isModalOpen ? (
         <RecipeList
           setIsModalOpen={setIsModalOpen}
           query={meals[randomIndex]}
         />
-      ) : null}
+      ) : null} */}
     </div>
   );
 }

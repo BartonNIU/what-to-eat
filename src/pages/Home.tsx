@@ -32,7 +32,7 @@ function Home() {
 
   return (
     <>
-      <div className='text-2xl p-5 flex justify-between cursor-pointer dark:text-white'>
+      <div className='text-2xl fixed p-5 w-full flex justify-between cursor-pointer dark:text-white'>
         <div className='c' data-action='dashboard' onClick={handleClick}>
           <AiOutlineUser />
         </div>
