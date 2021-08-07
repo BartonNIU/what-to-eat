@@ -45,7 +45,7 @@ function Dashboard() {
 
   return (
     <div className=''>
-      <Header />
+      <Header position='relative' />
 
       <div className=''>
         {Object.entries(defaultMeals).map(([key, meals]) => (
@@ -53,7 +53,7 @@ function Dashboard() {
             <div className=' dark:text-white flex justify-between text-xl mb-3'>
               <span> {key === "home" ? "家庭菜单" : "下馆子菜单"}</span>
               <span
-                className='bg-gray-300 text-xs px-3 py-1 rounded-full'
+                className='bg-gray-300 dark:bg-blue-400 text-xs px-3 py-1 rounded-full'
                 data-action='edit'
                 data-name={key}
                 onClick={handleClick}
@@ -84,9 +84,9 @@ function Dashboard() {
         ))}
       </div>
 
-      <div className='text-center'>
+      <div className='w-full fixed bottom-0 '>
         <button
-          className='bg-blue-500 text-white hover:bg-blue-600 px-6 py-3'
+          className='w-full bg-blue-500 text-white shadow-lg hover:bg-blue-600 px-6 py-4'
           data-action='login'
           onClick={handleClick}
         >

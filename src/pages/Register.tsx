@@ -40,7 +40,7 @@ function Register() {
   return (
     <>
       <Header />
-      <div className='h-full flex flex-col justify-center items-center'>
+      <div className='dark:text-white h-full flex flex-col justify-center items-center'>
         <div className='text-2xl font-bold mb-5'>注册</div>
         <div className='text-red-500 mb-3'>{error}</div>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -70,7 +70,7 @@ function Register() {
           <div className='text-red-500 text-sm mb-3'>
             {errors.confirmPassword?.message}
           </div>
-          <button className='bg-blue-500 hover:bg-blue-600 text-white px-10 py-3'>
+          <button className='bg-blue-500 hover:bg-blue-600 text-white shadow-lg px-10 py-3'>
             注册
           </button>
         </form>
