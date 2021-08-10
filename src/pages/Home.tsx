@@ -3,18 +3,22 @@ import { AiOutlineUser } from "react-icons/ai";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { useHistory } from "react-router-dom";
 import WhatToEat from "../components/WhatToEat";
+import { useTypeDispatch, useTypeSelector } from "../hooks/baseHooks";
+import { toggleDark } from "../reducers/settingsSlice";
 
 function Home() {
   const history = useHistory();
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  // const [darkMode, setIsDarkMode] = useState(false);
+  const { darkMode } = useTypeSelector((state) => state.settings);
+  const dispatch = useTypeDispatch();
 
   useEffect(() => {
-    if (isDarkMode) {
+    if (darkMode) {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
-  }, [isDarkMode]);
+  }, [darkMode]);
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     const { action } = e.currentTarget.dataset;
@@ -23,7 +27,8 @@ function Home() {
         history.push("/dashboard");
         break;
       case "dark-mode":
-        setIsDarkMode((prev) => !prev);
+        // setIsDarkMode((prev) => !prev);
+        dispatch(toggleDark());
         break;
       default:
         console.error(`Error, no such case: ${action}`);
@@ -37,7 +42,7 @@ function Home() {
           <AiOutlineUser />
         </div>
         <div className='' data-action='dark-mode' onClick={handleClick}>
-          {isDarkMode ? (
+          {darkMode ? (
             <span>
               <FiMoon />
             </span>

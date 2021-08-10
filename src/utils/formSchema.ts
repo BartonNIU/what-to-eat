@@ -9,7 +9,7 @@ const errorMsg = {
 
 export const registerSchema = yup.object().shape({
   email: yup.string().email(errorMsg.email).required(errorMsg.required),
-  password: yup.string().length(8, errorMsg.length).required(errorMsg.required),
+  password: yup.string().required(errorMsg.required).length(8, errorMsg.length),
   confirmPassword: yup
     .string()
     .required(errorMsg.required)
