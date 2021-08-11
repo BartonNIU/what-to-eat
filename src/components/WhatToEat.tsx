@@ -27,23 +27,23 @@ let randomIndexTimer: NodeJS.Timeout;
 let randomStylesTimer: NodeJS.Timeout;
 const countLimit = process.env.NODE_ENV === "development" ? 30 : 3;
 function WhatToEat() {
-  const [isStart, setIsStart] = useState(false);
-  const [randomIndex, setRandomIndex] = useState(-1);
-  const [randomStyles, setRandomStyles] = useState(
-    initializeStyles(combinedMeals.home)
-  );
-
   const { meals, mealGroupKey, clickedCount } = useTypeSelector(
     (state) => state.meals
   );
   const dispatch = useTypeDispatch();
 
+  const [isStart, setIsStart] = useState(false);
+  const [randomIndex, setRandomIndex] = useState(-1);
+  const [randomStyles, setRandomStyles] = useState(
+    initializeStyles(meals[mealGroupKey])
+  );
+
   const history = useHistory();
 
   useEffect(() => {
     // setMeals(combinedMeals[mealGroupKey]);
-    setRandomStyles(initializeStyles(combinedMeals[mealGroupKey]));
-  }, [mealGroupKey]);
+    setRandomStyles(initializeStyles(meals[mealGroupKey]));
+  }, [mealGroupKey, meals]);
 
   const handleStart = () => {
     if (clickedCount === countLimit) return dispatch(updateClickedCount()); //setClickCount((prev) => prev + 1);
@@ -170,10 +170,10 @@ function WhatToEat() {
               className='fixed transition-all duration-500 linear'
               style={{
                 // position: "fixed",
-                top: `${randomStyles[index].top}px`,
-                left: `${randomStyles[index].left}px`,
-                fontSize: `${randomStyles[index].font}px`,
-                opacity: randomStyles[index].opacity,
+                top: `${randomStyles[index]?.top}px`,
+                left: `${randomStyles[index]?.left}px`,
+                fontSize: `${randomStyles[index]?.font}px`,
+                opacity: randomStyles[index]?.opacity,
               }}
             >
               {item}
@@ -187,6 +187,9 @@ function WhatToEat() {
           query={meals[mealGroupKey][randomIndex]}
         />
       ) : null} */}
+      <div className='text-sm text-gray-200 dark:text-gray-600'>
+        {!isStart && "注：双击屏幕切换菜单"}
+      </div>
     </div>
   );
 }
