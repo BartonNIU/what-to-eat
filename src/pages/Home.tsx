@@ -4,7 +4,7 @@ import { FiSun, FiMoon } from "react-icons/fi";
 import { useHistory } from "react-router-dom";
 import WhatToEat from "../components/WhatToEat";
 import { useTypeDispatch, useTypeSelector } from "../hooks/baseHooks";
-import { toggleDark } from "../reducers/settingsSlice";
+import { toggleDark } from "../redux/settingsSlice";
 
 function Home() {
   const history = useHistory();

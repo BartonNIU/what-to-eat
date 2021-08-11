@@ -7,6 +7,12 @@ import { getRandomLeft, getRandomTop } from "../utils/position";
 import { useHistory } from "react-router-dom";
 import RecipeList from "./RecipeList";
 import { combinedMeals } from "../constants/meals";
+import { useTypeDispatch, useTypeSelector } from "../hooks/baseHooks";
+import {
+  resetClickedCount,
+  toggleMeal,
+  updateClickedCount,
+} from "../redux/mealsSlice";
 
 const initializeStyles = (array: string[]) => {
   return array.map((item) => ({
@@ -21,57 +27,46 @@ let randomIndexTimer: NodeJS.Timeout;
 let randomStylesTimer: NodeJS.Timeout;
 const countLimit = process.env.NODE_ENV === "development" ? 30 : 3;
 function WhatToEat() {
-  const [clickCount, setClickCount] = useState(0);
+  // const [clickedCount, setClickCount] = useState(0);
   const [isStart, setIsStart] = useState(false);
   const [randomIndex, setRandomIndex] = useState(-1);
-  const [meals, setMeals] = useState(combinedMeals.home);
-  const [mealKey, setMealKey] = useState("home");
   const [randomStyles, setRandomStyles] = useState(
     initializeStyles(combinedMeals.home)
   );
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { meals, mealKey, clickedCount } = useTypeSelector(
+    (state) => state.meals
+  );
+  const dispatch = useTypeDispatch();
 
   const history = useHistory();
 
-  // const { status, data, error, refetch } = useQuery(
-  //   "recipes",
-  //   () => getRecipesByName(meals[randomIndex]),
-  //   {
-  //     enabled: isModalOpen, //(!isStart && !!meals [randomIndex]) || isModalOpen, //, //() //trigger when stop and not the initial state, issue is that it could be triggered in a high frequency
-  //   }
-  // );
-
-  // console.log(status, data, error);
-
   useEffect(() => {
-    setMeals(combinedMeals[mealKey]);
+    // setMeals(combinedMeals[mealKey]);
     setRandomStyles(initializeStyles(combinedMeals[mealKey]));
   }, [mealKey]);
 
   const handleStart = () => {
-    if (clickCount === countLimit) return setClickCount((prev) => prev + 1);
+    if (clickedCount === countLimit) return dispatch(updateClickedCount()); //setClickCount((prev) => prev + 1);
     setIsStart(true);
 
-    // Start once immediately rather than waiting for 1s
-    // setTimeout(() => {
-    //   setRandomStyles(initializeStyles(meals));
-    // }, 50);
-
     randomIndexTimer = setInterval(() => {
-      setRandomIndex(Math.floor(Math.random() * meals.length));
+      setRandomIndex(Math.floor(Math.random() * meals[mealKey].length));
     }, 50);
 
     randomStylesTimer = setInterval(() => {
-      setRandomStyles(initializeStyles(meals));
+      setRandomStyles(initializeStyles(meals[mealKey]));
     }, 500);
   };
 
   const handleStop = () => {
-    setClickCount((prev) => prev + 1);
+    //setClickCount((prev) => prev + 1);
+    dispatch(updateClickedCount());
     clearInterval(randomIndexTimer);
     clearInterval(randomStylesTimer);
     setIsStart(false);
-    console.log(meals[randomIndex]);
+    console.log(meals[mealKey][randomIndex]);
     // refetch();
   };
 
@@ -79,14 +74,16 @@ function WhatToEat() {
     //setIsModalOpen(true);
     history.push({
       pathname: "/recipe",
-      search: `?name=${meals[randomIndex]}`,
+      search: `?name=${meals[mealKey][randomIndex]}`,
     });
   };
 
   const handleDoubleClick = () => {
     if (isStart) return;
-    setMealKey((prev) => (prev === "home" ? "restaurant" : "home"));
-    setClickCount(0);
+    //setMealKey((prev) => (prev === "home" ? "restaurant" : "home"));
+    dispatch(toggleMeal());
+    // setClickCount(0);
+    dispatch(resetClickedCount());
     setRandomIndex(-1);
   };
 
@@ -111,16 +108,16 @@ function WhatToEat() {
                 : "animate-none")
             }
           >
-            {clickCount && clickCount <= countLimit && !isStart
+            {clickedCount && clickedCount <= countLimit && !isStart
               ? "吃这个！"
               : "吃什么？"}
           </span>
         </div>
         <div className='text-red-500 text-3xl font-bold  m-5'>
-          {clickCount <= countLimit ? (
+          {clickedCount <= countLimit ? (
             <div>
-              {meals[randomIndex]}
-              {meals[randomIndex] && !isStart ? (
+              {meals[mealKey][randomIndex]}
+              {meals[mealKey][randomIndex] && !isStart ? (
                 //   &&
                 // status === "success" &&
                 //   data?.data.result
@@ -137,7 +134,7 @@ function WhatToEat() {
           )}
         </div>
 
-        {clickCount <= countLimit ? (
+        {clickedCount <= countLimit ? (
           isStart ? (
             <button
               className='bg-red-500 hover:bg-red-600 text-white text-lg shadow-lg rounded-lg px-10 py-3 m-5'
@@ -149,17 +146,17 @@ function WhatToEat() {
             <button
               className={
                 "bg-blue-500 hover:bg-blue-600 text-white text-lg shadow-lg rounded-lg  py-3 m-5 " +
-                (clickCount > 0 ? "px-6" : "px-10")
+                (clickedCount > 0 ? "px-6" : "px-10")
               }
               onClick={handleStart}
             >
-              {clickCount > 0 ? "再来一次" : " 开始"}
+              {clickedCount > 0 ? "再来一次" : " 开始"}
             </button>
           )
         ) : null}
       </div>
 
-      {meals.length ? (
+      {meals[mealKey].length ? (
         <div
           style={{ display: isStart ? "block" : "none" }}
           className={
@@ -169,7 +166,7 @@ function WhatToEat() {
             // isStart ? "visible" : "invisible"
           }
         >
-          {meals.map((item, index) => (
+          {meals[mealKey].map((item, index) => (
             <div
               key={index}
               className='fixed transition-all duration-500 linear'
@@ -189,7 +186,7 @@ function WhatToEat() {
       {/* {isModalOpen ? (
         <RecipeList
           setIsModalOpen={setIsModalOpen}
-          query={meals[randomIndex]}
+          query={meals[mealKey][randomIndex]}
         />
       ) : null} */}
     </div>

@@ -59,3 +59,9 @@ export const combinedMeals: CombinedMeals = {
   home: homeMeals,
   restaurant: restaurantMeals,
 };
+
+// export const combinedMeals = [
+//   homeMeals,
+//   restaurantMeals
+// ]
+ 
