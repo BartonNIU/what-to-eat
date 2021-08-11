@@ -51,7 +51,7 @@ const restaurantMeals = [
   "小笼包",
 ];
 
-interface CombinedMeals {
+export interface CombinedMeals {
   [key: string]: string[];
 }
 

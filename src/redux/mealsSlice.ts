@@ -1,15 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { combinedMeals } from "../constants/meals";
+import { CombinedMeals, combinedMeals } from "../constants/meals";
 
 interface MealsState {
-  darkMode: boolean;
+  meals: CombinedMeals;
+  mealGroupKey: string;
+  clickedCount: number;
+  randomIndex: number;
+  editMealGroupStatus: { [key: string]: boolean };
 }
 
-const initialState = {
+const initialState: MealsState = {
   meals: combinedMeals,
-  mealKey: "home",
+  mealGroupKey: "home",
   clickedCount: 0,
   randomIndex: -1,
+  editMealGroupStatus: {},
 };
 
 export const mealsSlice = createSlice({
@@ -18,16 +23,21 @@ export const mealsSlice = createSlice({
   reducers: {
     toggleMeal: (state) => {
       const keys = Object.keys(state.meals);
-      state.mealKey =
+      state.mealGroupKey =
         keys[
-          keys.indexOf(state.mealKey) < keys.length - 1
-            ? keys.indexOf(state.mealKey) + 1
+          keys.indexOf(state.mealGroupKey) < keys.length - 1
+            ? keys.indexOf(state.mealGroupKey) + 1
             : 0
         ];
     },
+    toggleEditMealGroup: (state, action) => {
+      state.editMealGroupStatus[action.payload] =
+        !!!state.editMealGroupStatus[action.payload];
+    },
     editMeal: (state, action) => {
-      state.meals[state.mealKey] = state.meals[state.mealKey].filter(
-        (item, index) => index !== action.payload.index
+      console.log(action, action.payload);
+      state.meals[action.payload.key] = state.meals[action.payload.key].filter(
+        (item, index) => index !== +action.payload.index
       );
     },
     updateClickedCount: (state) => {
@@ -42,7 +52,12 @@ export const mealsSlice = createSlice({
   },
 });
 
-export const { toggleMeal, editMeal, updateClickedCount, resetClickedCount } =
-  mealsSlice.actions;
+export const {
+  toggleMeal,
+  editMeal,
+  updateClickedCount,
+  resetClickedCount,
+  toggleEditMealGroup,
+} = mealsSlice.actions;
 
 export default mealsSlice.reducer;

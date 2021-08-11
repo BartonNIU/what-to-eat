@@ -4,23 +4,29 @@ import { AiOutlineMore } from "react-icons/ai";
 import { VscArrowLeft } from "react-icons/vsc";
 import { useHistory } from "react-router-dom";
 import Header from "../components/Header";
+import { useTypeDispatch, useTypeSelector } from "../hooks/baseHooks";
+import { editMeal, toggleEditMealGroup } from "../redux/mealsSlice";
 
 function Dashboard() {
   const history = useHistory();
-  const [defaultMeals, setDefaultMeals] = useState(combinedMeals);
-  const [editStatus, setEditStatus] = useState<{ [key: string]: boolean }>({
-    home: false,
-    restaurant: false,
-  });
+
+  const { meals, editMealGroupStatus } = useTypeSelector(
+    (state) => state.meals
+  );
+  const dispatch = useTypeDispatch();
+
+  console.log("editMealGroupStatus", meals);
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     const { action, name } = e.currentTarget.dataset;
-    console.log(action);
+    console.log(action, name);
 
     switch (action) {
       case "edit":
         if (name) {
-          setEditStatus((prev) => ({ ...prev, [name]: !prev[name] }));
+          // setEditStatus((prev) => ({ ...prev, [name]: !prev[name] }));
+
+          dispatch(toggleEditMealGroup(name));
         }
         break;
       case "login":
@@ -36,10 +42,11 @@ function Dashboard() {
     const { key, index } = e.currentTarget.dataset;
     console.log("key, index", key, index);
     if (key && index) {
-      setDefaultMeals((prev) => ({
-        ...prev,
-        [key]: prev[key].filter((item, ind) => ind !== +index),
-      }));
+      // setDefaultMeals((prev) => ({
+      //   ...prev,
+      //   [key]: prev[key].filter((item, ind) => ind !== +index),
+      // }));
+      dispatch(editMeal({ key, index }));
     }
   };
 
@@ -48,7 +55,7 @@ function Dashboard() {
       <Header position='relative' />
 
       <div className=''>
-        {Object.entries(defaultMeals).map(([key, meals]) => (
+        {Object.entries(meals).map(([key, meals]) => (
           <div className='m-5' key={key}>
             <div className=' dark:text-white flex justify-between text-xl mb-3'>
               <span> {key === "home" ? "家庭菜单" : "下馆子菜单"}</span>
@@ -58,7 +65,7 @@ function Dashboard() {
                 data-name={key}
                 onClick={handleClick}
               >
-                {editStatus[key] ? "保存" : "编辑"}
+                {editMealGroupStatus[key] ? "保存" : "编辑"}
               </span>
             </div>
             <ul className='flex  justify-start items-start overflow-x-auto'>
@@ -75,7 +82,7 @@ function Dashboard() {
                     data-index={index}
                     onClick={handleDelete}
                   >
-                    {editStatus[key] && "X"}
+                    {editMealGroupStatus[key] && "X"}
                   </span>
                 </li>
               ))}

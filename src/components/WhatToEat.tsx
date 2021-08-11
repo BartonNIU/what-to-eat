@@ -27,15 +27,13 @@ let randomIndexTimer: NodeJS.Timeout;
 let randomStylesTimer: NodeJS.Timeout;
 const countLimit = process.env.NODE_ENV === "development" ? 30 : 3;
 function WhatToEat() {
-  // const [clickedCount, setClickCount] = useState(0);
   const [isStart, setIsStart] = useState(false);
   const [randomIndex, setRandomIndex] = useState(-1);
   const [randomStyles, setRandomStyles] = useState(
     initializeStyles(combinedMeals.home)
   );
-  // const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { meals, mealKey, clickedCount } = useTypeSelector(
+  const { meals, mealGroupKey, clickedCount } = useTypeSelector(
     (state) => state.meals
   );
   const dispatch = useTypeDispatch();
@@ -43,20 +41,20 @@ function WhatToEat() {
   const history = useHistory();
 
   useEffect(() => {
-    // setMeals(combinedMeals[mealKey]);
-    setRandomStyles(initializeStyles(combinedMeals[mealKey]));
-  }, [mealKey]);
+    // setMeals(combinedMeals[mealGroupKey]);
+    setRandomStyles(initializeStyles(combinedMeals[mealGroupKey]));
+  }, [mealGroupKey]);
 
   const handleStart = () => {
     if (clickedCount === countLimit) return dispatch(updateClickedCount()); //setClickCount((prev) => prev + 1);
     setIsStart(true);
 
     randomIndexTimer = setInterval(() => {
-      setRandomIndex(Math.floor(Math.random() * meals[mealKey].length));
+      setRandomIndex(Math.floor(Math.random() * meals[mealGroupKey].length));
     }, 50);
 
     randomStylesTimer = setInterval(() => {
-      setRandomStyles(initializeStyles(meals[mealKey]));
+      setRandomStyles(initializeStyles(meals[mealGroupKey]));
     }, 500);
   };
 
@@ -66,7 +64,7 @@ function WhatToEat() {
     clearInterval(randomIndexTimer);
     clearInterval(randomStylesTimer);
     setIsStart(false);
-    console.log(meals[mealKey][randomIndex]);
+    console.log(meals[mealGroupKey][randomIndex]);
     // refetch();
   };
 
@@ -74,7 +72,7 @@ function WhatToEat() {
     //setIsModalOpen(true);
     history.push({
       pathname: "/recipe",
-      search: `?name=${meals[mealKey][randomIndex]}`,
+      search: `?name=${meals[mealGroupKey][randomIndex]}`,
     });
   };
 
@@ -116,8 +114,8 @@ function WhatToEat() {
         <div className='text-red-500 text-3xl font-bold  m-5'>
           {clickedCount <= countLimit ? (
             <div>
-              {meals[mealKey][randomIndex]}
-              {meals[mealKey][randomIndex] && !isStart ? (
+              {meals[mealGroupKey][randomIndex]}
+              {meals[mealGroupKey][randomIndex] && !isStart ? (
                 //   &&
                 // status === "success" &&
                 //   data?.data.result
@@ -156,7 +154,7 @@ function WhatToEat() {
         ) : null}
       </div>
 
-      {meals[mealKey].length ? (
+      {meals[mealGroupKey].length ? (
         <div
           style={{ display: isStart ? "block" : "none" }}
           className={
@@ -166,7 +164,7 @@ function WhatToEat() {
             // isStart ? "visible" : "invisible"
           }
         >
-          {meals[mealKey].map((item, index) => (
+          {meals[mealGroupKey].map((item, index) => (
             <div
               key={index}
               className='fixed transition-all duration-500 linear'
@@ -186,7 +184,7 @@ function WhatToEat() {
       {/* {isModalOpen ? (
         <RecipeList
           setIsModalOpen={setIsModalOpen}
-          query={meals[mealKey][randomIndex]}
+          query={meals[mealGroupKey][randomIndex]}
         />
       ) : null} */}
     </div>
