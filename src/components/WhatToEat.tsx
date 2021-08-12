@@ -6,13 +6,13 @@ import { getRandomFontSize } from "../utils/font";
 import { getRandomLeft, getRandomTop } from "../utils/position";
 import { useHistory } from "react-router-dom";
 import RecipeList from "./RecipeList";
-import { combinedMeals } from "../constants/meals";
+import { combinedMenus } from "../constants/menus";
 import { useTypeDispatch, useTypeSelector } from "../hooks/baseHooks";
 import {
   resetClickedCount,
-  toggleMeal,
+  toggleMenu,
   updateClickedCount,
-} from "../redux/mealsSlice";
+} from "../redux/menusSlice";
 
 const initializeStyles = (array: string[]) => {
   return array.map((item) => ({
@@ -27,34 +27,34 @@ let randomIndexTimer: NodeJS.Timeout;
 let randomStylesTimer: NodeJS.Timeout;
 const countLimit = process.env.NODE_ENV === "development" ? 30 : 3;
 function WhatToEat() {
-  const { meals, mealGroupKey, clickedCount } = useTypeSelector(
-    (state) => state.meals
+  const { menus, menuKey, clickedCount } = useTypeSelector(
+    (state) => state.menus
   );
   const dispatch = useTypeDispatch();
 
   const [isStart, setIsStart] = useState(false);
   const [randomIndex, setRandomIndex] = useState(-1);
   const [randomStyles, setRandomStyles] = useState(
-    initializeStyles(meals[mealGroupKey])
+    initializeStyles(menus[menuKey])
   );
 
   const history = useHistory();
 
   useEffect(() => {
-    // setMeals(combinedMeals[mealGroupKey]);
-    setRandomStyles(initializeStyles(meals[mealGroupKey]));
-  }, [mealGroupKey, meals]);
+    // setMenus(combinedMenus[menuKey]);
+    setRandomStyles(initializeStyles(menus[menuKey]));
+  }, [menuKey, menus]);
 
   const handleStart = () => {
     if (clickedCount === countLimit) return dispatch(updateClickedCount()); //setClickCount((prev) => prev + 1);
     setIsStart(true);
 
     randomIndexTimer = setInterval(() => {
-      setRandomIndex(Math.floor(Math.random() * meals[mealGroupKey].length));
+      setRandomIndex(Math.floor(Math.random() * menus[menuKey].length));
     }, 50);
 
     randomStylesTimer = setInterval(() => {
-      setRandomStyles(initializeStyles(meals[mealGroupKey]));
+      setRandomStyles(initializeStyles(menus[menuKey]));
     }, 500);
   };
 
@@ -64,7 +64,7 @@ function WhatToEat() {
     clearInterval(randomIndexTimer);
     clearInterval(randomStylesTimer);
     setIsStart(false);
-    console.log(meals[mealGroupKey][randomIndex]);
+    console.log(menus[menuKey][randomIndex]);
     // refetch();
   };
 
@@ -72,14 +72,14 @@ function WhatToEat() {
     //setIsModalOpen(true);
     history.push({
       pathname: "/recipe",
-      search: `?name=${meals[mealGroupKey][randomIndex]}`,
+      search: `?name=${menus[menuKey][randomIndex]}`,
     });
   };
 
   const handleDoubleClick = () => {
     if (isStart) return;
     //setMealKey((prev) => (prev === "home" ? "restaurant" : "home"));
-    dispatch(toggleMeal());
+    dispatch(toggleMenu());
     // setClickCount(0);
     dispatch(resetClickedCount());
     setRandomIndex(-1);
@@ -114,8 +114,8 @@ function WhatToEat() {
         <div className='text-red-500 text-3xl font-bold  m-5'>
           {clickedCount <= countLimit ? (
             <div>
-              {meals[mealGroupKey][randomIndex]}
-              {meals[mealGroupKey][randomIndex] && !isStart ? (
+              {menus[menuKey][randomIndex]}
+              {menus[menuKey][randomIndex] && !isStart ? (
                 //   &&
                 // status === "success" &&
                 //   data?.data.result
@@ -154,7 +154,7 @@ function WhatToEat() {
         ) : null}
       </div>
 
-      {meals[mealGroupKey].length ? (
+      {menus[menuKey].length ? (
         <div
           style={{ display: isStart ? "block" : "none" }}
           className={
@@ -164,7 +164,7 @@ function WhatToEat() {
             // isStart ? "visible" : "invisible"
           }
         >
-          {meals[mealGroupKey].map((item, index) => (
+          {menus[menuKey].map((item, index) => (
             <div
               key={index}
               className='fixed transition-all duration-500 linear'
@@ -184,7 +184,7 @@ function WhatToEat() {
       {/* {isModalOpen ? (
         <RecipeList
           setIsModalOpen={setIsModalOpen}
-          query={meals[mealGroupKey][randomIndex]}
+          query={meals[menuKey][randomIndex]}
         />
       ) : null} */}
       <div className='text-sm text-gray-200 dark:text-gray-600'>

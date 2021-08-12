@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { combinedMeals } from "../constants/meals";
+import { combinedMenus } from "../constants/menus";
 import { AiOutlineMore } from "react-icons/ai";
 import { VscArrowLeft } from "react-icons/vsc";
 import { useHistory } from "react-router-dom";
 import Header from "../components/Header";
 import { useTypeDispatch, useTypeSelector } from "../hooks/baseHooks";
-import { editMeal, toggleEditMealGroup } from "../redux/mealsSlice";
+import { editMeal, toggleEditMealGroup } from "../redux/menusSlice";
 
 function Dashboard() {
   const history = useHistory();
 
-  const { meals, editMealGroupStatus } = useTypeSelector(
-    (state) => state.meals
+  const { menus, editMealGroupStatus } = useTypeSelector(
+    (state) => state.menus
   );
   const { isLogin } = useTypeSelector((state) => state.users);
   const dispatch = useTypeDispatch();
@@ -53,7 +53,7 @@ function Dashboard() {
       <Header position='relative' />
 
       <div className=''>
-        {Object.entries(meals).map(([key, meals]) => (
+        {Object.entries(menus).map(([key, menus]) => (
           <div className='m-5' key={key}>
             <div className=' dark:text-white flex justify-between text-xl mb-3'>
               <span> {key === "home" ? "家庭菜单" : "下馆子菜单"}</span>
@@ -67,7 +67,7 @@ function Dashboard() {
               </span>
             </div>
             <ul className='flex  justify-start items-start overflow-x-auto'>
-              {meals.map((item, index) => (
+              {menus.map((item, index) => (
                 <li
                   key={index}
                   className='bg-yellow-700 text-white px-3 py-3 m-2 rounded-md'

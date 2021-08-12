@@ -1,4 +1,4 @@
-const homeMeals = [
+const homeMenu = [
   "肥肠面",
   "螺蛳粉",
   "回锅肉",
@@ -31,7 +31,7 @@ const homeMeals = [
   "孜然羊肉",
 ];
 
-const restaurantMeals = [
+const restaurantMenu = [
   "Brunch",
   "泰国菜",
   "越南菜",
@@ -51,17 +51,16 @@ const restaurantMeals = [
   "小笼包",
 ];
 
-export interface CombinedMeals {
+export interface CombinedMenus {
   [key: string]: string[];
 }
 
-export const combinedMeals: CombinedMeals = {
-  home: homeMeals,
-  restaurant: restaurantMeals,
+export const combinedMenus: CombinedMenus = {
+  home: homeMenu,
+  restaurant: restaurantMenu,
 };
 
-// export const combinedMeals = [
-//   homeMeals,
-//   restaurantMeals
+// export const combinedMenus = [
+//   homeMenu,
+//   restaurantMenu
 // ]
- 

@@ -1,42 +1,43 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { CombinedMeals, combinedMeals } from "../constants/meals";
+import { CombinedMenus, combinedMenus } from "../constants/menus";
 
-interface MealsState {
-  meals: CombinedMeals;
-  mealGroupKey: string;
+interface MenusState {
+  menus: CombinedMenus;
+  menuKey: string;
   clickedCount: number;
-  randomIndex: number;
+  // randomIndex: number;
   editMealGroupStatus: { [key: string]: boolean };
 }
 
-const initialState: MealsState = {
-  meals: combinedMeals,
-  mealGroupKey: "home",
+const initialState: MenusState = {
+  menus: combinedMenus,
+  menuKey: "home",
   clickedCount: 0,
-  randomIndex: -1,
+  // randomIndex: -1,
   editMealGroupStatus: {},
 };
 
-export const mealsSlice = createSlice({
+export const menusSlice = createSlice({
   name: "meal",
   initialState,
   reducers: {
-    toggleMeal: (state) => {
-      const keys = Object.keys(state.meals);
-      state.mealGroupKey =
+    toggleMenu: (state) => {
+      const keys = Object.keys(state.menus);
+      state.menuKey =
         keys[
-          keys.indexOf(state.mealGroupKey) < keys.length - 1
-            ? keys.indexOf(state.mealGroupKey) + 1
+          keys.indexOf(state.menuKey) < keys.length - 1
+            ? keys.indexOf(state.menuKey) + 1
             : 0
         ];
     },
+    addMenu: (state) => {},
     toggleEditMealGroup: (state, action) => {
       state.editMealGroupStatus[action.payload] =
         !!!state.editMealGroupStatus[action.payload];
     },
     editMeal: (state, action) => {
       console.log(action, action.payload);
-      state.meals[action.payload.key] = state.meals[action.payload.key].filter(
+      state.menus[action.payload.key] = state.menus[action.payload.key].filter(
         (item, index) => index !== +action.payload.index
       );
     },
@@ -53,11 +54,11 @@ export const mealsSlice = createSlice({
 });
 
 export const {
-  toggleMeal,
+  toggleMenu,
   editMeal,
   updateClickedCount,
   resetClickedCount,
   toggleEditMealGroup,
-} = mealsSlice.actions;
+} = menusSlice.actions;
 
-export default mealsSlice.reducer;
+export default menusSlice.reducer;
