@@ -5,7 +5,7 @@ import { VscArrowLeft } from "react-icons/vsc";
 import { useHistory } from "react-router-dom";
 import Header from "../components/Header";
 import { useTypeDispatch, useTypeSelector } from "../hooks/baseHooks";
-import { editMeal, toggleEditMealGroup } from "../redux/menusSlice";
+import { editMeal, toggleMenuGroup } from "../redux/menusSlice";
 
 function Dashboard() {
   const history = useHistory();
@@ -25,7 +25,7 @@ function Dashboard() {
         if (name) {
           // setEditStatus((prev) => ({ ...prev, [name]: !prev[name] }));
 
-          dispatch(toggleEditMealGroup(name));
+          dispatch(toggleMenuGroup(name));
         }
         break;
       case "create-menu":

@@ -10,6 +10,7 @@ function CreateMenu() {
   };
 
   const handleClick = () => {
+    // setInputValue("");
     setMenu((prev) => [...prev, inputValue]);
   };
 
@@ -20,18 +21,24 @@ function CreateMenu() {
       <div className='w-10/12 p-2 my-2 mx-auto'>
         <div className='dark:text-white'>添加新菜单</div>
         <div
-          className='bg-gray-200 p-2 my-3 mx-auto border-2 border-solid'
+          className='bg-gray-200 p-1 my-3 mx-auto border-2 border-solid'
           style={{ minHeight: "300px" }}
         >
-          {menu.map((meal, index) => (
-            <span key={index} className='bg-gray-400 px-3 py-1 rounded-full'>
-              {meal}
-            </span>
-          ))}
+          <ul className='p-0 m-0 flex flex-wrap'>
+            {menu.map((meal, index) => (
+              <li
+                key={index}
+                className='bg-gray-400 text-sm px-3 py-1 m-1 rounded-full'
+              >
+                <span className='c'>{meal}</span>
+                <span className='pl-2'>X</span>
+              </li>
+            ))}
+          </ul>
         </div>
         <div className='w-full flex justify-between'>
           <input
-            className='py-3 flex-auto'
+            className='py-3 px-2 flex-auto border border-solid border-gray-300'
             type='text'
             value={inputValue}
             onChange={handleChange}

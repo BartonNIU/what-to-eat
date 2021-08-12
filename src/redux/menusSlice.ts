@@ -31,7 +31,7 @@ export const menusSlice = createSlice({
         ];
     },
     addMenu: (state) => {},
-    toggleEditMealGroup: (state, action) => {
+    toggleMenuGroup: (state, action) => {
       state.editMealGroupStatus[action.payload] =
         !!!state.editMealGroupStatus[action.payload];
     },
@@ -58,7 +58,7 @@ export const {
   editMeal,
   updateClickedCount,
   resetClickedCount,
-  toggleEditMealGroup,
+  toggleMenuGroup,
 } = menusSlice.actions;
 
 export default menusSlice.reducer;
