@@ -25,11 +25,16 @@ function Dashboard() {
         if (name) {
           // setEditStatus((prev) => ({ ...prev, [name]: !prev[name] }));
 
-          dispatch(toggleMenuGroup(name));
+          //dispatch(toggleMenuGroup(name));
+            history.push({
+              pathname: `/create-menu/${name}`,
+            });
         }
         break;
       case "create-menu":
-        history.push("/create-menu");
+        history.push({
+          pathname: "/create-menu/new",      
+        });
         break;
       case "login":
         history.push("/login");

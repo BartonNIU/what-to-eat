@@ -51,7 +51,7 @@ function App() {
             <Route path='/dashboard'>
               <Dashboard />
             </Route>
-            <Route path='/create-menu'>
+            <Route path='/create-menu/:key'>
               <CreateMenu />
             </Route>
           </Switch>
