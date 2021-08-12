@@ -7,6 +7,10 @@ import Recipe from "./pages/Recipe";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import { useTypeDispatch, useTypeSelector } from "./hooks/baseHooks";
+import { useEffect } from "react";
+import { checkLogin } from "./redux/usersSlice";
+import CreateMenu from "./pages/CreateMenu";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,6 +23,14 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  const { isLogin } = useTypeSelector((state) => state.users);
+  const dispatch = useTypeDispatch();
+
+  useEffect(() => {
+    const isLocalToken = !!localStorage.getItem("accessToken");
+    dispatch(checkLogin(isLogin || isLocalToken));
+  }, []);
+
   return (
     <Router>
       <QueryClientProvider client={queryClient}>
@@ -38,6 +50,9 @@ function App() {
             </Route>
             <Route path='/dashboard'>
               <Dashboard />
+            </Route>
+            <Route path='/create-menu'>
+              <CreateMenu />
             </Route>
           </Switch>
         </div>

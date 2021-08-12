@@ -6,9 +6,13 @@ import { useHistory } from "react-router-dom";
 import { useQuery } from "react-query";
 import { login } from "../apis/auth";
 import Header from "../components/Header";
+import { useTypeDispatch, useTypeSelector } from "../hooks/baseHooks";
+import { checkLogin } from "../redux/usersSlice";
 
 function Login() {
   const history = useHistory();
+  const dispatch = useTypeDispatch();
+
   const {
     register,
     handleSubmit,
@@ -35,7 +39,9 @@ function Login() {
     try {
       const response = await login(data.email, data.password);
       console.log(response, response.data.accessToken);
+      dispatch(checkLogin(true));
       localStorage.setItem("accessToken", response.data.accessToken);
+      history.replace("/dashboard");
     } catch (error) {
       console.error(error.message, error.response);
       setError(error.response?.data.msg || error.message);

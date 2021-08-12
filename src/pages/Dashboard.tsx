@@ -13,13 +13,12 @@ function Dashboard() {
   const { meals, editMealGroupStatus } = useTypeSelector(
     (state) => state.meals
   );
+  const { isLogin } = useTypeSelector((state) => state.users);
   const dispatch = useTypeDispatch();
-
-  console.log("editMealGroupStatus", meals);
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     const { action, name } = e.currentTarget.dataset;
-    console.log(action, name);
+    // console.log(action, name);
 
     switch (action) {
       case "edit":
@@ -28,6 +27,9 @@ function Dashboard() {
 
           dispatch(toggleEditMealGroup(name));
         }
+        break;
+      case "create-menu":
+        history.push("/create-menu");
         break;
       case "login":
         history.push("/login");
@@ -42,10 +44,6 @@ function Dashboard() {
     const { key, index } = e.currentTarget.dataset;
     console.log("key, index", key, index);
     if (key && index) {
-      // setDefaultMeals((prev) => ({
-      //   ...prev,
-      //   [key]: prev[key].filter((item, ind) => ind !== +index),
-      // }));
       dispatch(editMeal({ key, index }));
     }
   };
@@ -65,7 +63,7 @@ function Dashboard() {
                 data-name={key}
                 onClick={handleClick}
               >
-                {editMealGroupStatus[key] ? "保存" : "编辑"}
+                {editMealGroupStatus[key] ? "退出" : "编辑"}
               </span>
             </div>
             <ul className='flex  justify-start items-start overflow-x-auto'>
@@ -91,15 +89,27 @@ function Dashboard() {
         ))}
       </div>
 
-      <div className='w-full fixed bottom-0 '>
-        <button
-          className='w-full bg-blue-500 text-white shadow-lg hover:bg-blue-600 px-6 py-4'
-          data-action='login'
-          onClick={handleClick}
-        >
-          登录创建菜单
-        </button>
-      </div>
+      {isLogin ? (
+        <div className='c'>
+          <button
+            className=' bg-blue-500 text-white shadow-lg hover:bg-blue-600 px-6 py-3'
+            data-action='create-menu'
+            onClick={handleClick}
+          >
+            创建菜单
+          </button>
+        </div>
+      ) : (
+        <div className='w-full fixed bottom-0 '>
+          <button
+            className='w-full bg-blue-500 text-white shadow-lg hover:bg-blue-600 px-6 py-4'
+            data-action='login'
+            onClick={handleClick}
+          >
+            登录创建菜单
+          </button>
+        </div>
+      )}
     </div>
   );
 }
