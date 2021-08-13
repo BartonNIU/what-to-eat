@@ -7,6 +7,16 @@ import Header from "../components/Header";
 import { useTypeDispatch, useTypeSelector } from "../hooks/baseHooks";
 import { deleteMeal, toggleMenuGroup } from "../redux/menusSlice";
 
+interface Title {
+  [key: string]: string;
+}
+
+const titles: Title = {
+  home: "家常菜单",
+  restaurant: "下馆子菜单",
+  new: "自定义菜单",
+};
+
 function Dashboard() {
   const history = useHistory();
 
@@ -61,7 +71,7 @@ function Dashboard() {
         {Object.entries(menus).map(([key, menus]) => (
           <div className='m-5' key={key}>
             <div className=' dark:text-white flex justify-between text-xl mb-3'>
-              <span> {key === "home" ? "家庭菜单" : "下馆子菜单"}</span>
+              <span> {titles[key]}</span>
               <span
                 className='bg-gray-300 dark:bg-blue-400 text-xs px-3 py-1 rounded-full'
                 data-action='edit'

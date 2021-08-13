@@ -46,7 +46,7 @@ function CreateMenu() {
     <div className=' '>
       <Header position='relative' />
 
-      <div className='w-10/12 p-2 my-2 mx-auto'>
+      <div className='w-11/12 p-2 my-2 mx-auto'>
         <div className='dark:text-white'>{titles[key]}</div>
         <div
           className='bg-gray-200 p-1 my-3 mx-auto border-2 border-solid'

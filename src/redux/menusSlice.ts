@@ -36,7 +36,10 @@ export const menusSlice = createSlice({
         !!!state.editMealGroupStatus[action.payload];
     },
     addMeal: (state, action) => {
-      console.log(action.payload);
+      console.log(action.payload, !state.menus[action.payload.key]);
+      if (!state.menus[action.payload.key]) {
+        state.menus[action.payload.key] = [action.payload.value];
+      }
       if (
         state.menus[action.payload.key].indexOf(action.payload.value) === -1
       ) {
