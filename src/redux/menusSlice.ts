@@ -35,7 +35,15 @@ export const menusSlice = createSlice({
       state.editMealGroupStatus[action.payload] =
         !!!state.editMealGroupStatus[action.payload];
     },
-    editMeal: (state, action) => {
+    addMeal: (state, action) => {
+      console.log(action.payload);
+      if (
+        state.menus[action.payload.key].indexOf(action.payload.value) === -1
+      ) {
+        state.menus[action.payload.key].push(action.payload.value);
+      }
+    },
+    deleteMeal: (state, action) => {
       console.log(action, action.payload);
       state.menus[action.payload.key] = state.menus[action.payload.key].filter(
         (item, index) => index !== +action.payload.index
@@ -55,7 +63,8 @@ export const menusSlice = createSlice({
 
 export const {
   toggleMenu,
-  editMeal,
+  addMeal,
+  deleteMeal,
   updateClickedCount,
   resetClickedCount,
   toggleMenuGroup,

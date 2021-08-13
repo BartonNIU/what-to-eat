@@ -5,7 +5,7 @@ import { VscArrowLeft } from "react-icons/vsc";
 import { useHistory } from "react-router-dom";
 import Header from "../components/Header";
 import { useTypeDispatch, useTypeSelector } from "../hooks/baseHooks";
-import { editMeal, toggleMenuGroup } from "../redux/menusSlice";
+import { deleteMeal, toggleMenuGroup } from "../redux/menusSlice";
 
 function Dashboard() {
   const history = useHistory();
@@ -26,14 +26,14 @@ function Dashboard() {
           // setEditStatus((prev) => ({ ...prev, [name]: !prev[name] }));
 
           //dispatch(toggleMenuGroup(name));
-            history.push({
-              pathname: `/create-menu/${name}`,
-            });
+          history.push({
+            pathname: `/create-menu/${name}`,
+          });
         }
         break;
       case "create-menu":
         history.push({
-          pathname: "/create-menu/new",      
+          pathname: "/create-menu/new",
         });
         break;
       case "login":
@@ -49,7 +49,7 @@ function Dashboard() {
     const { key, index } = e.currentTarget.dataset;
     console.log("key, index", key, index);
     if (key && index) {
-      dispatch(editMeal({ key, index }));
+      dispatch(deleteMeal({ key, index }));
     }
   };
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../components/Header";
 import { useTypeDispatch, useTypeSelector } from "../hooks/baseHooks";
-import { editMeal } from "../redux/menusSlice";
+import { addMeal, deleteMeal } from "../redux/menusSlice";
 
 interface Title {
   [key: string]: string;
@@ -28,15 +28,17 @@ function CreateMenu() {
     setInputValue(e.target.value);
   };
 
-  const handleClick = () => {
-    // setInputValue("");
-    setMenu((prev) => [...prev, inputValue]);
+  const handleSubmit = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setInputValue("");
+    //setMenu((prev) => [...prev, inputValue]);
+    inputValue && dispatch(addMeal({ key, value: inputValue }));
   };
 
   const handleDelete = (e: React.MouseEvent<HTMLSpanElement>) => {
     const { index } = e.currentTarget.dataset;
     if (key && index) {
-      dispatch(editMeal({ key, index }));
+      dispatch(deleteMeal({ key, index }));
     }
   };
 
@@ -54,7 +56,7 @@ function CreateMenu() {
             {menus[key]?.map((meal, index) => (
               <li
                 key={index}
-                className='bg-gray-400 text-sm px-3 py-1 m-1 rounded-full'
+                className='bg-yellow-700 text-white text-sm px-3 py-1 m-1 rounded-full'
               >
                 <span className='c'>{meal}</span>
                 <span
@@ -68,19 +70,21 @@ function CreateMenu() {
             ))}
           </ul>
         </div>
-        <div className='w-full flex justify-between'>
-          <input
-            className='py-3 px-2 flex-auto border border-solid border-gray-300'
-            type='text'
-            value={inputValue}
-            onChange={handleChange}
-          />
-          <button
-            className='bg-blue-500 text-white shadow-lg hover:bg-blue-600 px-6 py-3'
-            onClick={handleClick}
-          >
-            添加
-          </button>
+        <div>
+          <form className='w-full flex justify-between' onSubmit={handleSubmit}>
+            <input
+              className='py-3 px-2 flex-auto border border-solid border-gray-300'
+              type='text'
+              value={inputValue}
+              onChange={handleChange}
+            />
+            <button
+              className='bg-blue-500 text-white shadow-lg hover:bg-blue-600 px-6 py-3'
+              // onClick={handleClick}
+            >
+              添加
+            </button>
+          </form>
         </div>
       </div>
     </div>
