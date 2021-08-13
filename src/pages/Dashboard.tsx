@@ -105,15 +105,17 @@ function Dashboard() {
       </div>
 
       {isLogin ? (
-        <div className='c'>
-          <button
-            className=' bg-blue-500 text-white shadow-lg hover:bg-blue-600 px-6 py-3'
-            data-action='create-menu'
-            onClick={handleClick}
-          >
-            创建菜单
-          </button>
-        </div>
+        menus.new ? null : (
+          <div className='c'>
+            <button
+              className=' bg-blue-500 text-white shadow-lg hover:bg-blue-600 px-6 py-3'
+              data-action='create-menu'
+              onClick={handleClick}
+            >
+              创建菜单
+            </button>
+          </div>
+        )
       ) : (
         <div className='w-full fixed bottom-0 '>
           <button

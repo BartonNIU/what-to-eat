@@ -34,7 +34,7 @@ function App() {
   return (
     <Router>
       <QueryClientProvider client={queryClient}>
-        <div className='h-screen text-center dark:bg-gray-800'>
+        <div className='min-h-screen text-center dark:bg-gray-800'>
           <Switch>
             <Route path='/' exact>
               <Home />
