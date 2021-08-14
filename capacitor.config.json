@@ -1,0 +1,8 @@
+{
+  "appId": "io.ionic.whatToEat",
+  "appName": "今天吃什么",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "build",
+  "cordova": {}
+}

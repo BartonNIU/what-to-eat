@@ -1,0 +1,7 @@
+{
+  "name": "今天吃什么",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
