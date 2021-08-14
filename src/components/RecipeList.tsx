@@ -102,10 +102,10 @@ function RecipeList() {
                 </ul>
               </div>
             </div>
-            <div className='text-3xl font-bold text-gray-500 dark:text-yellow-200 flex justify-between p-5 cursor-pointer'>
-              <div className='c'>
+            <div className='text-3xl font-bold text-gray-500 dark:text-yellow-200 flex justify-end p-5 cursor-pointer'>
+              {/* <div className='c'>
                 <Share />
-              </div>
+              </div> */}
               <div className='d' onClick={handleBackToTop}>
                 <RiArrowUpLine />
               </div>
