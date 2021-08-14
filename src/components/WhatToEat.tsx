@@ -87,7 +87,7 @@ function WhatToEat() {
 
   return (
     <div
-      className='h-full w-full flex flex-col justify-center items-center'
+      className='h-screen w-full flex flex-col justify-center items-center'
       onDoubleClick={handleDoubleClick}
     >
       <div className='relative z-20'>
