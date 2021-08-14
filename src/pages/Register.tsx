@@ -26,7 +26,7 @@ function Register() {
       try {
         const result = await registerRequest(data.email, data.password);
         console.log(result);
-        history.push("/login");
+        history.replace("/login");
       } catch (error) {
         console.error(error.message, error.response);
         setError(error.response?.data.msg || error.message);
@@ -35,7 +35,7 @@ function Register() {
     };
 
     const handleClick = () => {
-      history.push({
+      history.replace({
         pathname: "/login",
       });
     };
