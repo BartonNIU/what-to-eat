@@ -23,6 +23,7 @@ function Login() {
   });
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   // const { status, data, error, refetch } = useQuery(
   //   "login",
@@ -36,6 +37,7 @@ function Login() {
 
   const onSubmit = async (data: any) => {
     console.log(data);
+    setIsLoading(true);
     try {
       const response = await login(data.email, data.password);
       console.log(response, response.data.accessToken);
@@ -46,6 +48,7 @@ function Login() {
       console.error(error.message, error.response);
       setError(error.response?.data.msg || error.message);
     }
+    setIsLoading(false);
   };
 
   const handleClick = () => {
@@ -57,7 +60,7 @@ function Login() {
   return (
     <>
       <Header />
-      <div className='dark:text-white h-full flex flex-col justify-center items-center'>
+      <div className='dark:text-white h-screen flex flex-col justify-center items-center'>
         <div className='text-2xl font-bold mb-5'>登录</div>
         <div className='text-red-500 mb-3'>{error}</div>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -78,8 +81,11 @@ function Login() {
           <div className='text-red-500 text-sm mb-3'>
             {errors.password?.message}
           </div>
-          <button className='bg-blue-500 hover:bg-blue-600 text-white shadow-lg px-10 py-3'>
-            登录
+          <button
+            className='bg-blue-500 hover:bg-blue-600 disabled:opacity-50 text-white shadow-lg px-10 py-3'
+            disabled={isLoading}
+          >
+            {isLoading ? "登录中..." : "登录"}
           </button>
         </form>
         <div

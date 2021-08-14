@@ -40,7 +40,7 @@ function Register() {
   return (
     <>
       <Header />
-      <div className='dark:text-white h-full flex flex-col justify-center items-center'>
+      <div className='dark:text-white h-screen flex flex-col justify-center items-center'>
         <div className='text-2xl font-bold mb-5'>注册</div>
         <div className='text-red-500 mb-3'>{error}</div>
         <form onSubmit={handleSubmit(onSubmit)}>
