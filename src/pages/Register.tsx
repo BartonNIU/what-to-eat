@@ -18,21 +18,24 @@ function Register() {
   });
 
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data: any) => {
     console.log(data);
+    setIsLoading(true);
     try {
       const result = await registerRequest(data.email, data.password);
       console.log(result);
-      history.push("/login");
+      history.replace("/login");
     } catch (error) {
       console.error(error.message, error.response);
       setError(error.response?.data.msg || error.message);
     }
+    setIsLoading(false);
   };
 
   const handleClick = () => {
-    history.push({
+    history.replace({
       pathname: "/login",
     });
   };
@@ -71,7 +74,7 @@ function Register() {
             {errors.confirmPassword?.message}
           </div>
           <button className='bg-blue-500 hover:bg-blue-600 text-white shadow-lg px-10 py-3'>
-            注册
+            {isLoading ? "注册中..." : "注册"}
           </button>
         </form>
         <div
