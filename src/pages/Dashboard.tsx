@@ -64,7 +64,7 @@ function Dashboard() {
   };
 
   return (
-    <div className=''>
+    <div className='min-h-screen'>
       <Header position='relative' />
 
       <div className=''>
