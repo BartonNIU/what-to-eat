@@ -41,6 +41,14 @@ function WhatToEat() {
   const history = useHistory();
 
   useEffect(() => {
+    // console.log("clickedCount", clickedCount);
+
+    if (clickedCount > 3) {
+      setTimeout(() => dispatch(resetClickedCount()), 1000 * 60 * 5);
+    }
+  }, [clickedCount, dispatch]);
+
+  useEffect(() => {
     // setMenus(combinedMenus[menuKey]);
     setRandomStyles(initializeStyles(menus[menuKey]));
   }, [menuKey, menus]);
@@ -188,7 +196,7 @@ function WhatToEat() {
         />
       ) : null} */}
       <div className='text-sm text-gray-200 dark:text-gray-600'>
-        {!isStart && "注：双击屏幕切换菜单"}
+        {!isStart && clickedCount <= 3 && "注：双击屏幕切换菜单"}
       </div>
     </div>
   );

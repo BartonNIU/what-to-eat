@@ -1,6 +1,7 @@
 # What to eat
 
 Hard to make the decision what to eat today? here is the solution
+> [Live Demo](https://chishenme.vercel.app/)
 
 ## Help you choose the meal
 - it will give you the random meal option that you can follow with :)
