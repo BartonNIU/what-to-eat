@@ -37,16 +37,34 @@ function WhatToEat() {
   const [randomStyles, setRandomStyles] = useState(
     initializeStyles(menus[menuKey])
   );
+  const [timeRemaining, setTimeRemaining] = useState(60 * 5); //5mins
+  //console.log("timeRemaining", timeRemaining);
 
   const history = useHistory();
 
   useEffect(() => {
-    // console.log("clickedCount", clickedCount);
-
+    console.log("clickedCount", clickedCount);
+    let interval: NodeJS.Timeout;
+    let timer: NodeJS.Timeout;
     if (clickedCount > 3) {
-      setTimeout(() => dispatch(resetClickedCount()), 1000 * 60 * 5);
+      timer = setTimeout(() => dispatch(resetClickedCount()), 1000 * 60 * 5); //FIXME: Why order matter? if putting this line below setInterval, it will need another 5mins
+      interval = setInterval(
+        () => setTimeRemaining((prev) => (prev > 0 ? prev - 1 : 0)),
+        1000
+      );
     }
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timer);
+    };
   }, [clickedCount, dispatch]);
+
+  useEffect(() => {
+    if (clickedCount > 3 && timeRemaining === 0) {
+      setTimeRemaining(60 * 5);
+    }
+  }, [timeRemaining, clickedCount]);
 
   useEffect(() => {
     // setMenus(combinedMenus[menuKey]);
@@ -196,7 +214,14 @@ function WhatToEat() {
         />
       ) : null} */}
       <div className='text-sm text-gray-200 dark:text-gray-600'>
-        {!isStart && clickedCount <= 3 && "注：双击屏幕切换菜单"}
+        {isStart
+          ? ""
+          : clickedCount <= 3
+          ? "注：双击屏幕切换菜单"
+          : Math.floor(timeRemaining / 60) +
+            " 分钟 " +
+            (timeRemaining % 60) +
+            " 秒后重置"}
       </div>
     </div>
   );
