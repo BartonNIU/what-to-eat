@@ -47,7 +47,10 @@ function WhatToEat() {
     let interval: NodeJS.Timeout;
     let timer: NodeJS.Timeout;
     if (clickedCount > 3) {
-      timer = setTimeout(() => dispatch(resetClickedCount()), 1000 * 60 * 5); //FIXME: Why order matter? if putting this line below setInterval, it will need another 5mins
+      timer = setTimeout(() => {
+        dispatch(resetClickedCount());
+        setRandomIndex(-1);
+      }, 1000 * 60 * 5); //FIXME: Why order matter? if putting this line below setInterval, it will need another 5mins
       interval = setInterval(
         () => setTimeRemaining((prev) => (prev > 0 ? prev - 1 : 0)),
         1000
@@ -132,7 +135,10 @@ function WhatToEat() {
                 : "animate-none")
             }
           >
-            {clickedCount && clickedCount <= countLimit && !isStart
+            {clickedCount &&
+            clickedCount <= countLimit &&
+            !isStart &&
+            randomIndex !== -1
               ? "吃这个！"
               : "吃什么？"}
           </span>
