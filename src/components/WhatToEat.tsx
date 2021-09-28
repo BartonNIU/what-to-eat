@@ -13,6 +13,7 @@ import {
   toggleMenu,
   updateClickedCount,
 } from "../redux/menusSlice";
+import { resetTimeRemaining, timeCountdown } from "../redux/settingsSlice";
 
 const initializeStyles = (array: string[]) => {
   return array.map((item) => ({
@@ -25,11 +26,14 @@ const initializeStyles = (array: string[]) => {
 
 let randomIndexTimer: NodeJS.Timeout;
 let randomStylesTimer: NodeJS.Timeout;
+let countdownInterval: NodeJS.Timeout;
 const countLimit = process.env.NODE_ENV === "development" ? 30 : 3;
+
 function WhatToEat() {
   const { menus, menuKey, clickedCount } = useTypeSelector(
     (state) => state.menus
   );
+  const { timeRemaining } = useTypeSelector((state) => state.settings);
   const dispatch = useTypeDispatch();
 
   const [isStart, setIsStart] = useState(false);
@@ -37,37 +41,41 @@ function WhatToEat() {
   const [randomStyles, setRandomStyles] = useState(
     initializeStyles(menus[menuKey])
   );
-  const [timeRemaining, setTimeRemaining] = useState(60 * 5); //5mins
+  // const [timeRemaining, setTimeRemaining] = useState(60 * 5); //5mins
   //console.log("timeRemaining", timeRemaining);
 
   const history = useHistory();
 
   useEffect(() => {
-    console.log("clickedCount", clickedCount);
-    let interval: NodeJS.Timeout;
-    let timer: NodeJS.Timeout;
+    //console.log("clickedCount", clickedCount);
+
+    //let timer: NodeJS.Timeout;
     if (clickedCount > 3) {
-      timer = setTimeout(() => {
-        dispatch(resetClickedCount());
-        setRandomIndex(-1);
-      }, 1000 * 60 * 5); //FIXME: Why order matter? if putting this line below setInterval, it will need another 5mins
-      interval = setInterval(
-        () => setTimeRemaining((prev) => (prev > 0 ? prev - 1 : 0)),
+      // timer = setTimeout(() => {
+      //   dispatch(resetClickedCount());
+      //   setRandomIndex(-1);
+      // }, 1000 * 60 * 5); //FIXME: Why order matter? if putting this line below setInterval, it will need another 5mins
+      countdownInterval = setInterval(
+        () => dispatch(timeCountdown()), //setTimeRemaining((prev) => (prev > 0 ? prev - 1 : 0)),
         1000
       );
     }
 
     return () => {
-      clearInterval(interval);
-      clearTimeout(timer);
+      clearInterval(countdownInterval);
+      //clearTimeout(timer);
     };
   }, [clickedCount, dispatch]);
 
   useEffect(() => {
     if (clickedCount > 3 && timeRemaining === 0) {
-      setTimeRemaining(60 * 5);
+      //setTimeRemaining(60 * 5);
+      clearInterval(countdownInterval);
+      dispatch(resetClickedCount());
+      dispatch(resetTimeRemaining());
+      setRandomIndex(-1);
     }
-  }, [timeRemaining, clickedCount]);
+  }, [timeRemaining, clickedCount, dispatch]);
 
   useEffect(() => {
     // setMenus(combinedMenus[menuKey]);
