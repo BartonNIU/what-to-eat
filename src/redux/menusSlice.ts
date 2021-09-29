@@ -1,9 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { CombinedMenus, combinedMenus } from "../constants/menus";
 
+enum Menus {}
+
+const menuKeys = Object.keys(combinedMenus);
 interface MenusState {
   menus: CombinedMenus;
   menuKey: string;
+  menuIndex: number;
   clickedCount: number;
   // randomIndex: number;
   editMealGroupStatus: { [key: string]: boolean };
@@ -11,7 +15,8 @@ interface MenusState {
 
 const initialState: MenusState = {
   menus: combinedMenus,
-  menuKey: "home",
+  menuKey: menuKeys[0],
+  menuIndex: 0,
   clickedCount: 0,
   // randomIndex: -1,
   editMealGroupStatus: {},
@@ -22,16 +27,19 @@ export const menusSlice = createSlice({
   initialState,
   reducers: {
     toggleMenu: (state) => {
-      const keys = Object.keys(state.menus);
-      state.menuKey =
-        keys[
-          keys.indexOf(state.menuKey) < keys.length - 1
-            ? keys.indexOf(state.menuKey) + 1
-            : 0
-        ];
+      //const keys = Object.keys(state.menus);
+      // state.menuKey =
+      //   keys[
+      //     keys.indexOf(state.menuKey) < keys.length - 1
+      //       ? keys.indexOf(state.menuKey) + 1
+      //       : 0
+      //   ];
+      state.menuIndex =
+        state.menuIndex < menuKeys.length - 1 ? state.menuIndex + 1 : 0;
+      state.menuKey = menuKeys[state.menuIndex];
     },
     addMenu: (state) => {},
-    toggleMenuGroup: (state, action) => {
+    toggleMenuEditStatus: (state, action) => {
       state.editMealGroupStatus[action.payload] =
         !!!state.editMealGroupStatus[action.payload];
     },
@@ -70,7 +78,7 @@ export const {
   deleteMeal,
   updateClickedCount,
   resetClickedCount,
-  toggleMenuGroup,
+  toggleMenuEditStatus,
 } = menusSlice.actions;
 
 export default menusSlice.reducer;
