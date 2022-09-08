@@ -101,7 +101,7 @@ function WhatToEat() {
     clearInterval(randomIndexTimer);
     clearInterval(randomStylesTimer);
     setIsStart(false);
-    console.log(menus[menuKey][randomIndex]);
+    //console.log(menus[menuKey][randomIndex]);
     // refetch();
   };
 
@@ -155,7 +155,9 @@ function WhatToEat() {
           {clickedCount <= countLimit ? (
             <div>
               {menus[menuKey][randomIndex]}
-              {menus[menuKey][randomIndex] && !isStart ? (
+              {menuKey !== "restaurant" &&
+              menus[menuKey][randomIndex] &&
+              !isStart ? (
                 //   &&
                 // status === "success" &&
                 //   data?.data.result
