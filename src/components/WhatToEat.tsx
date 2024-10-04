@@ -27,13 +27,13 @@ const initializeStyles = (array: string[]) => {
 let randomIndexTimer: NodeJS.Timeout;
 let randomStylesTimer: NodeJS.Timeout;
 let countdownInterval: NodeJS.Timeout;
-const countLimit = process.env.NODE_ENV === "development" ? 30 : 3;
+const countLimit = process.env.NODE_ENV === "development" ? 3 : 3;
 
 function WhatToEat() {
   const { menus, menuKey, clickedCount } = useTypeSelector(
     (state) => state.menus
   );
-  const { timeRemaining } = useTypeSelector((state) => state.settings);
+  //const { timeRemaining } = useTypeSelector((state) => state.settings);
   const dispatch = useTypeDispatch();
 
   const [isStart, setIsStart] = useState(false);
@@ -41,13 +41,22 @@ function WhatToEat() {
   const [randomStyles, setRandomStyles] = useState(
     initializeStyles(menus[menuKey])
   );
-  // const [timeRemaining, setTimeRemaining] = useState(60 * 5); //5mins
+  const [timeRemaining, setTimeRemaining] = useState(() => {
+    const storedTime = localStorage.getItem("countdownTime");
+    if (storedTime) {
+      const remainingTime = parseInt(storedTime, 10) - Date.now();
+      return remainingTime > 0 ? Math.floor(remainingTime / 1000) : 300; // 5 minutes in seconds
+    }
+    return 300; // 5 minutes in seconds
+  });
   //console.log("timeRemaining", timeRemaining);
 
   const history = useHistory();
 
   useEffect(() => {
     //console.log("clickedCount", clickedCount);
+    const targetTime = Date.now() + timeRemaining * 1000;
+    localStorage.setItem("countdownTime", targetTime.toString());
 
     //let timer: NodeJS.Timeout;
     if (clickedCount > 3) {
@@ -55,24 +64,32 @@ function WhatToEat() {
       //   dispatch(resetClickedCount());
       //   setRandomIndex(-1);
       // }, 1000 * 60 * 5); //FIXME: Why order matter? if putting this line below setInterval, it will need another 5mins
-      countdownInterval = setInterval(
-        () => dispatch(timeCountdown()), //setTimeRemaining((prev) => (prev > 0 ? prev - 1 : 0)),
-        1000
-      );
+      countdownInterval = setInterval(() => {
+        const secondsLeft = Math.round((targetTime - Date.now()) / 1000);
+
+        if (secondsLeft < 0) {
+          clearInterval(countdownInterval);
+          setTimeRemaining(0);
+          localStorage.removeItem("countdownTime");
+        } else {
+          setTimeRemaining(secondsLeft);
+        }
+      }, 1000);
     }
 
     return () => {
       clearInterval(countdownInterval);
       //clearTimeout(timer);
     };
-  }, [clickedCount, dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clickedCount]);
 
   useEffect(() => {
     if (clickedCount > 3 && timeRemaining === 0) {
-      //setTimeRemaining(60 * 5);
+      setTimeRemaining(60 * 5);
       clearInterval(countdownInterval);
       dispatch(resetClickedCount());
-      dispatch(resetTimeRemaining());
+      // dispatch(resetTimeRemaining());
       setRandomIndex(-1);
     }
   }, [timeRemaining, clickedCount, dispatch]);
@@ -120,6 +137,7 @@ function WhatToEat() {
     // setClickCount(0);
     dispatch(resetClickedCount());
     setRandomIndex(-1);
+    setTimeRemaining(60 * 5);
   };
 
   return (
