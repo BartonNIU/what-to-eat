@@ -45,7 +45,7 @@ function WhatToEat() {
     const storedTime = localStorage.getItem("countdownTime");
     if (storedTime) {
       const remainingTime = parseInt(storedTime, 10) - Date.now();
-      return remainingTime > 0 ? Math.floor(remainingTime / 1000) : 300; // 5 minutes in seconds
+      return remainingTime > 0 ? Math.floor(remainingTime / 1000) : 0;
     }
     return 300; // 5 minutes in seconds
   });
@@ -67,7 +67,7 @@ function WhatToEat() {
       countdownInterval = setInterval(() => {
         const secondsLeft = Math.round((targetTime - Date.now()) / 1000);
 
-        if (secondsLeft < 0) {
+        if (secondsLeft <= 0) {
           clearInterval(countdownInterval);
           setTimeRemaining(0);
           localStorage.removeItem("countdownTime");
